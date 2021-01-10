@@ -26,7 +26,7 @@ def is_valid_path(board, path, words):
 
     return "Word_Test"
 
-print(is_valid_path([],[(1, 2) ,(2, 3),(1, 3)],"noy"))
+print(is_valid_path([],[(1, 2) ,(2, 3),(1, 3)],"test"))
 
 
 def find_length_n_words(n, board, words):
