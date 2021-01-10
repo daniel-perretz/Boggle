@@ -12,7 +12,7 @@ def is_valid_path(board, path, words):
     for coor in path:
         x, y = coor
         if x > MAX_ROW or y > MAX_COL:
-            return False
+            return None
 
 
 
