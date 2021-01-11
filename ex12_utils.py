@@ -18,14 +18,13 @@ def is_valid_path(board, path, words):
         x2,y2 = path[i+1]
         if abs(x1-x2) > MAX_DIFFERENCE or abs(y1-y2) > MAX_DIFFERENCE:
             return None
-            break
-    dup_list = list(set(path)) # check for double coordinate
+    dup_list = set(path)  # check for double coordinate
     if len(dup_list) < len(path):
         return None
     word = ''
     for coor in path:
         x, y = coor
-        word = word + board[x][y] # join didnt work for some reason
+        word += board[x][y]  # join didnt work for some reason
     if word in words:
         return word
     return None
