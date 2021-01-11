@@ -1,6 +1,10 @@
+from typing import List, Tuple
+
 MAX_ROW = 3
 MAX_COL = 3
 MAX_DIFFERENCE = 1
+
+
 def load_words_dict(file_path):
     with open(file_path) as f:
         content = f.read().splitlines()
@@ -31,7 +35,14 @@ def is_valid_path(board, path, words):
 
 
 def find_length_n_words(n, board, words):
-    pass
+    return finder_helper(n, "", [], (0,0), board, words)
+
+def finder_helper(n: int, path: str, output: List, coor: Tuple[int, int],
+                  board: List[List[str]], words: dict[str:bool]):
+    if n == 0:
+        return output
+
+    for
 
 def main():
 
