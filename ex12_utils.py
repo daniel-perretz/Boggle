@@ -24,7 +24,7 @@ def is_valid_path(board, path, words):
     word = ''
     for coor in path:
         x, y = coor
-        word = word + board[x][y]
+        word = word + board[x][y] # join didnt work for some reason
     if word in words:
         return word
     return None
