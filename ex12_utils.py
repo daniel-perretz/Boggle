@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 
 MAX_ROW = 3
 MAX_COL = 3
@@ -35,14 +35,63 @@ def is_valid_path(board, path, words):
 
 
 def find_length_n_words(n, board, words):
-    return finder_helper(n, "", [], (0,0), board, words)
+    # todo: handle 16<n<2
+    words_list = minimize_dict(n, words)  # filters words that are too long
+    output = []
+    for y in range(len(board)):
+        for x in range(len(board[0])):
+            output += finder_helper(n, "", [], (x, y), board, words_list)
+    return output
 
-def finder_helper(n: int, path: str, output: List, coor: Tuple[int, int],
-                  board: List[List[str]], words: dict[str:bool]):
-    if n == 0:
-        return output
 
-    for
+def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
+                  cur_step: Tuple[int, int], board: List[List[str]],
+                  words_list: List[str]):
+
+    if n == 0:  # base case
+        if path in words_list:
+            return [path, coordinates]
+        else:
+            return []
+
+    x, y = cur_step
+    if x > MAX_ROW or y > MAX_COL:  # out of bounds
+        return []
+    if cur_step in coordinates:  # duplicated coordinate
+        return []
+    path += board[x][y]
+    if not is_path_possible(path, words_list):  # no matching words in list
+        return []
+    cur_step += coordinates
+
+    #todo: take next step - provide (n - 1) and new cur_step recursivley
+    # do not update path or coordinate as they do that in the next call
+
+
+def minimize_dict(n: int, words: Dict[str, bool]) -> List[str]:
+    """ Extracts from a dictionary a list of words up to a given length"""
+    output = []
+    for word in words:
+        if len(word) <= n:
+            output.append(word)
+    return output
+
+
+def is_path_possible(path: str, words_list: List[str]):
+    """ Checks if any of the words in a given list start with a given string"""
+    for word in words_list:
+        if len(word) < len(path):
+            continue
+        for i in range(len(path)):
+            if path[i] == word[i]:
+                if i == len(path) - 1:  # -> word starts with the whole "path"
+                    return True
+                continue  # check the next letter
+            else:
+                break
+    # meaning no word in list starts with path
+    return False
+
 
 def main():
 
