@@ -1,5 +1,6 @@
 MAX_ROW = 3
 MAX_COL = 3
+MAX_DIFFERENCE = 1
 def load_words_dict(file_path):
     with open(file_path) as f:
         content = f.read().splitlines()
@@ -15,7 +16,7 @@ def is_valid_path(board, path, words):
     for i in range(len(path)-1):
         x1,y1 = path[i]
         x2,y2 = path[i+1]
-        if abs(x1-x2) > 1 or abs(y1-y2) > 1:
+        if abs(x1-x2) > MAX_DIFFERENCE or abs(y1-y2) > MAX_DIFFERENCE:
             return None
             break
     dup_list = list(set(path)) # check for double coordinate
