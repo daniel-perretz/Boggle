@@ -35,6 +35,8 @@ def is_valid_path(board, path, words):
 
 
 def find_length_n_words(n, board, words):
+    """ Returns a list of tuples containing all the valid words in given a
+    given length on the board"""
     words_list = minimize_dict(n, words)  # filters words that are too long
     output = []
     for y in range(len(board)):
@@ -46,6 +48,8 @@ def find_length_n_words(n, board, words):
 def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
                   cur_step: Tuple[int, int], board: List[List[str]],
                   words_list: List[str]):
+    """ An internal function that helps 'find_length_n_words' to check
+    all possible words that start in a specific coordinate"""
     x, y = cur_step
     if x > MAX_ROW or y > MAX_COL or x < 0 or y < 0:  # out of bounds
         return []
@@ -61,7 +65,14 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
             return [(path, coordinates)]
         else:
             return []
+    output = \
+        proceed_to_neighbors(board, coordinates, n, path, words_list, x, y)
+    return output
 
+
+def proceed_to_neighbors(board, coordinates, n, path, words_list, x, y):
+    """ An internal function that calls finder_helper on all of a given
+    coordinate's surroundings"""
     output = []
     neighbors = [(x + 1, y), (x + 1, y + 1), (x, y + 1), (x + 1, y - 1),
                  (x, y - 1), (x - 1, y - 1), (x - 1, y), (x - 1, y + 1)]
@@ -69,7 +80,6 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
         output += \
             finder_helper(n, path, coordinates, neighbor, board, words_list)
     return output
-    # do not update path or coordinate as they do that in the next call
 
 
 def minimize_dict(n: int, words: Dict[str, bool]) -> List[str]:
@@ -122,4 +132,4 @@ def main():
 
 
 if __name__ == '__main__':
-    find_length_n_words()
+    pass
