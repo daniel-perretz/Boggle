@@ -46,9 +46,8 @@ def find_length_n_words(n, board, words):
 def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
                   cur_step: Tuple[int, int], board: List[List[str]],
                   words_list: List[str]):
-
     x, y = cur_step
-    if x > MAX_ROW or y > MAX_COL:  # out of bounds
+    if x > MAX_ROW or y > MAX_COL or x < 0 or y < 0:  # out of bounds
         return []
     if cur_step in coordinates:  # duplicated coordinate
         return []
@@ -57,9 +56,9 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
         return []
     coordinates = coordinates + [cur_step]
 
-    if n == len(coordinates):  # base case
+    if n == len(path):  # base case
         if path in words_list:
-            return [path, coordinates]
+            return [(path, coordinates)]
         else:
             return []
 
@@ -67,7 +66,7 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
     neighbors = [(x + 1, y), (x + 1, y + 1), (x, y + 1), (x + 1, y - 1),
                  (x, y - 1), (x - 1, y - 1), (x - 1, y), (x - 1, y + 1)]
     for neighbor in neighbors:
-        output +=\
+        output += \
             finder_helper(n, path, coordinates, neighbor, board, words_list)
     return output
     # do not update path or coordinate as they do that in the next call
