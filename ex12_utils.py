@@ -17,10 +17,10 @@ def is_valid_path(board, path, words):
         x, y = coor
         if x > MAX_ROW or y > MAX_COL:
             return None
-    for i in range(len(path)-1):
-        x1,y1 = path[i]
-        x2,y2 = path[i+1]
-        if abs(x1-x2) > MAX_DIFFERENCE or abs(y1-y2) > MAX_DIFFERENCE:
+    for i in range(len(path) - 1):
+        x1, y1 = path[i]
+        x2, y2 = path[i + 1]
+        if abs(x1 - x2) > MAX_DIFFERENCE or abs(y1 - y2) > MAX_DIFFERENCE:
             return None
     dup_list = set(path)  # check for double coordinate
     if len(dup_list) < len(path):
@@ -35,7 +35,6 @@ def is_valid_path(board, path, words):
 
 
 def find_length_n_words(n, board, words):
-    # todo: handle 16<n<2
     words_list = minimize_dict(n, words)  # filters words that are too long
     output = []
     for y in range(len(board)):
@@ -48,12 +47,6 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
                   cur_step: Tuple[int, int], board: List[List[str]],
                   words_list: List[str]):
 
-    if n == 0:  # base case
-        if path in words_list:
-            return [path, coordinates]
-        else:
-            return []
-
     x, y = cur_step
     if x > MAX_ROW or y > MAX_COL:  # out of bounds
         return []
@@ -62,9 +55,21 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
     path += board[x][y]
     if not is_path_possible(path, words_list):  # no matching words in list
         return []
-    cur_step += coordinates
+    coordinates = coordinates + [cur_step]
 
-    #todo: take next step - provide (n - 1) and new cur_step recursivley
+    if n == len(coordinates):  # base case
+        if path in words_list:
+            return [path, coordinates]
+        else:
+            return []
+
+    output = []
+    neighbors = [(x + 1, y), (x + 1, y + 1), (x, y + 1), (x + 1, y - 1),
+                 (x, y - 1), (x - 1, y - 1), (x - 1, y), (x - 1, y + 1)]
+    for neighbor in neighbors:
+        output +=\
+            finder_helper(n, path, coordinates, neighbor, board, words_list)
+    return output
     # do not update path or coordinate as they do that in the next call
 
 
@@ -94,7 +99,6 @@ def is_path_possible(path: str, words_list: List[str]):
 
 
 def main():
-
     board = [
         ['A', 'E', 'A', 'N', 'E', 'G'],
         ['A', 'H', 'S', 'P', 'C', 'O'],
@@ -119,4 +123,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    find_length_n_words()
