@@ -107,3 +107,18 @@ if __name__ == '__main__':
     word_dict2 = {'DOGS': True}
     expected2 = [("DOGS", [(1, 0), (1, 1)])]
     # print(find_length_n_words(2, board2, word_dict2))
+
+def is_path_possible(path: str, words_list: List[str]):
+    """ Checks if any of the words in a given list start with a given string"""
+    for word in words_list:
+        if len(word) < len(path):
+            continue
+        for i in range(len(path)):
+            if path[i] == word[i]:
+                if i == len(path) - 1:  # -> word starts with the whole "path"
+                    return True
+                continue  # check the next letter
+            else:
+                break
+    # meaning no word in list starts with path
+    return False
