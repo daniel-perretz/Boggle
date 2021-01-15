@@ -37,6 +37,8 @@ def is_valid_path(board, path, words):
 def find_length_n_words(n, board, words):
     """ Returns a list of tuples containing all the valid words in given a
     given length on the board"""
+    if n > MAX_ROW * MAX_COL * 2 or n < 1:  # each tile is up to 2 letters
+        return []
     words_list = minimize_dict(n, words)  # filters words that are too long
     output = []
     for y in range(len(board)):
@@ -47,7 +49,7 @@ def find_length_n_words(n, board, words):
 
 def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
                   cur_step: Tuple[int, int], board: List[List[str]],
-                  words_list: List[str]):
+                  words_dict: Dict[str, bool]):
     """ An internal function that helps 'find_length_n_words' to check
     all possible words that start in a specific coordinate"""
     x, y = cur_step
@@ -56,17 +58,15 @@ def finder_helper(n: int, path: str, coordinates: List[Tuple[int, int]],
     if cur_step in coordinates:  # duplicated coordinate
         return []
     path += board[x][y]
-    if not is_path_possible(path, words_list):  # no matching words in list
-        return []
     coordinates = coordinates + [cur_step]
 
     if n == len(path):  # base case
-        if path in words_list:
+        if path in words_dict:
             return [(path, coordinates)]
         else:
             return []
     output = \
-        proceed_to_neighbors(board, coordinates, n, path, words_list, x, y)
+        proceed_to_neighbors(board, coordinates, n, path, words_dict, x, y)
     return output
 
 
@@ -82,12 +82,12 @@ def proceed_to_neighbors(board, coordinates, n, path, words_list, x, y):
     return output
 
 
-def minimize_dict(n: int, words: Dict[str, bool]) -> List[str]:
-    """ Extracts from a dictionary a list of words up to a given length"""
-    output = []
+def minimize_dict(n: int, words: Dict[str, bool]) -> Dict[str, bool]:
+    """ Returns a minimized dictionary so that it only contains words up to a given length"""
+    output = {}
     for word in words:
         if len(word) <= n:
-            output.append(word)
+            output[word] = True
     return output
 
 
@@ -132,4 +132,12 @@ def main():
 
 
 if __name__ == '__main__':
-    pass
+    board = [['C', 'A', 'T', 'Q'],
+             ['D', 'O', 'G', 'Q'],
+             ['B', 'I', 'T', 'Q'],
+             ['Q', 'Q', 'Q', 'Q']]
+    word_dict = {'CAT': True, 'DOG': True, 'BIT': True}
+    expected = [("CAT", [(0, 0), (0, 1), (0, 2)]),
+                ("DOG", [(1, 0), (1, 1), (1, 2)]),
+                ("BIT", [(2, 0), (2, 1), (2, 2)])]
+    print(find_length_n_words(3, board, word_dict))
