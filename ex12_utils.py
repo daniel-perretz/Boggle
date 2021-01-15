@@ -39,11 +39,11 @@ def find_length_n_words(n, board, words):
     given length on the board"""
     if n > MAX_ROW * MAX_COL * 2 or n < 1:  # each tile is up to 2 letters
         return []
-    words_list = minimize_dict(n, words)  # filters words that are too long
+    words_dict = minimize_dict(n, words)  # filters words that are too long
     output = []
     for y in range(len(board)):
         for x in range(len(board[0])):
-            output += finder_helper(n, "", [], (x, y), board, words_list)
+            output += finder_helper(n, "", [], (x, y), board, words_dict)
     return output
 
 
@@ -89,22 +89,6 @@ def minimize_dict(n: int, words: Dict[str, bool]) -> Dict[str, bool]:
         if len(word) <= n:
             output[word] = True
     return output
-
-
-def is_path_possible(path: str, words_list: List[str]):
-    """ Checks if any of the words in a given list start with a given string"""
-    for word in words_list:
-        if len(word) < len(path):
-            continue
-        for i in range(len(path)):
-            if path[i] == word[i]:
-                if i == len(path) - 1:  # -> word starts with the whole "path"
-                    return True
-                continue  # check the next letter
-            else:
-                break
-    # meaning no word in list starts with path
-    return False
 
 
 def main():
