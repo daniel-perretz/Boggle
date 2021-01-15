@@ -5,7 +5,7 @@ class BoggleGui:
     def __init__(self):
         self.root = tki.Tk()
         self.title = tki.Label(text="Boggle")
-        self.start_button = tki.Button(text="START", bg="black", fg="white")
+        self.start_button = tki.Button(text="START ", bg="black", fg="white")
         self.start_button.pack()
         self.title.pack()
 
