@@ -112,7 +112,6 @@ def main():
     ]
 
     dic = load_words_dict("boggle_dict.txt")
-    print(is_valid_path(board, [(1, 2), (2, 3), (1, 3)], dic))
 
 
 if __name__ == '__main__':
@@ -124,4 +123,3 @@ if __name__ == '__main__':
     expected = [("CAT", [(0, 0), (0, 1), (0, 2)]),
                 ("DOG", [(1, 0), (1, 1), (1, 2)]),
                 ("BIT", [(2, 0), (2, 1), (2, 2)])]
-    print(find_length_n_words(3, board, word_dict))

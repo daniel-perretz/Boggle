@@ -8,7 +8,8 @@ class BoggleController:
         self.gui = BoggleGui()
         self.model = Model()
 
-        self.gui.set_button_text(self.model.board)
+        self.gui.set_button_text_and_action(self.model.board,
+                                            self.handle_button_press)
         self.gui.show_label_score(self.model.get_points())
 
     def run(self) -> None:
@@ -21,7 +22,7 @@ class BoggleController:
     def get_button_location(self, button):
         return self.gui.buttons_dict[button]
 
-    def submit_word(self, word):
+    def submit_word(self):
         self.model.handle_word()
 
 if __name__ == "__main__":

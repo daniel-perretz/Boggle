@@ -1,5 +1,5 @@
 import tkinter as tki
-from typing import Callable, Dict, List, Any
+from typing import Callable, Dict
 
 NUM_COLS = 4
 NUM_ROWS = 4
@@ -14,7 +14,8 @@ class BoggleGui:
         self.score_label = tki.Label(text="0", relief=tki.RIDGE)
         self.start_button = tki.Button(text="START ", bg="red", fg="white",
                                        master=self.upper_frame)
-        self.buttons_dict = {}
+        self.buttons_dict: Dict = {}
+        self.buttons_list: list = []
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
                 frame = tki.Frame(
@@ -26,17 +27,19 @@ class BoggleGui:
                 button = tki.Button(master=frame, text='?', padx=30, pady=30,
                                     relief=tki.RIDGE)
                 self.buttons_dict[button] = (i, j)
+                self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
 
         self.pack()
 
-    def set_button_text(self, board):
+    def set_button_text_and_action(self, board, func: Callable):
         count = 0
         for row in range(len(board)):
             for col in range(len(board[row])):
-                button = self.buttons_dict[count]
+                button = self.buttons_list[count]
                 button.configure(height=1, width=1, text=board[row][col])
                 count += 1
+                button.bind("<Button>", func)
 
     def show_label_score(self, points):
         self.score_label.configure(text=f"score: {points}")
