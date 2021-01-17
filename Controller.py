@@ -14,7 +14,15 @@ class BoggleController:
     def run(self) -> None:
         self.gui.run()
 
+    def handle_button_press(self, button):
+        coor = self.get_button_location(button)
+        self.model.update_cur_path(coor)
 
+    def get_button_location(self, button):
+        return self.gui.buttons_dict[button]
+
+    def submit_word(self, word):
+        self.model.handle_word()
 
 if __name__ == "__main__":
     BoggleController().run()

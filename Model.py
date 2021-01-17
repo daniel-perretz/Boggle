@@ -29,6 +29,9 @@ class Model:
                 self.cur_path = []
                 return True
 
+    def update_cur_path(self, coor):
+        self.cur_path.append(coor)
+
     def update_points(self, n) -> None:
         self.__points += n ** 2
 
