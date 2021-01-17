@@ -10,9 +10,8 @@ class BoggleGui:
         self.root = tki.Tk()
         self.root.resizable(False, False)
         self.upper_frame = tki.Frame()
-        self.lower_frame = tki.Frame()
         self.mid_frame = tki.Frame()
-        self.title = tki.Label(text="Boggle" , master=self.lower_frame)
+        self.score_label = tki.Label(text= "0",relief=tki.RIDGE)
         self.start_button = tki.Button(text="START ", bg="red", fg="white",master=self.upper_frame)
         self.buttons_list = []
         for i in range(NUM_COLS):
@@ -23,9 +22,10 @@ class BoggleGui:
                 )
 
                 frame.grid(row=i, column=j)
-                button = tki.Button(master=frame,text ='',padx=30, pady=30,relief=tki.RIDGE)
+                button = tki.Button(master=frame,text ='?',padx=30, pady=30,relief=tki.RIDGE)
                 self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
+
         self.pack()
 
     def set_button_text(self, board):
@@ -36,12 +36,14 @@ class BoggleGui:
                 button.configure(height = 1, width = 1 ,text= board[row][col])
                 count += 1
 
+    def show_label_score(self, points):
+        self.score_label.configure(text=f"score: {points}")
+
     def pack(self):
         self.upper_frame.pack(side=tki.TOP )
         self.mid_frame.pack(padx=40 , pady=0)
-        self.lower_frame.pack(side=tki.BOTTOM)
         self.start_button.pack()
-        self.title.pack()
+        self.score_label.pack(padx=10 ,pady=50)
 
 
     def run(self) -> None:

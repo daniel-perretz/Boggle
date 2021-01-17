@@ -9,6 +9,7 @@ class BoggleController:
         self.model = Model()
 
         self.gui.set_button_text(self.model.board)
+        self.gui.show_label_score(self.model.get_points())
 
     def run(self) -> None:
         self.gui.run()
