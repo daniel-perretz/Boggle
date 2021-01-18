@@ -125,7 +125,14 @@ class BoggleGui:
             self.start_button.configure(text="Play again?")
         else:
             m, s = divmod(t, 60)
-            self.count_label.configure(text=f"{m}:{s}")
+            if s // 10 == 0 and m // 10 == 0:
+                self.count_label.configure(text=f"0{m}:0{s}")
+            elif s // 10 == 0:
+                self.count_label.configure(text=f"{m}:0{s}")
+            elif m // 10 == 0:
+                self.count_label.configure(text=f"0{m}:{s}")
+            else:
+                self.count_label.configure(text=f"{m}:{s}")
 
         self.root.after(1000, self.countdown, (t - 1))
 
