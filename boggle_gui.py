@@ -2,15 +2,15 @@ import tkinter as tki
 from typing import Callable, Dict, List, Any
 
 GAME_LENGTH = 180  # in seconds
-
 NUM_COLS = 4
 NUM_ROWS = 4
-
+MAIN_COLOR = "grey"
 
 class BoggleGui:
     def __init__(self):
         self.root = tki.Tk()
         self.root.resizable(False, False)
+        self.correct_word_label = tki.Label(self.root,text="Word list: ", relief=tki.RIDGE,font=('helvetica', 15))
         self.count_label = tki.Label(self.root, relief=tki.RIDGE,
                                      font=('helvetica', 40))
         self.mid_frame = tki.Frame()
@@ -34,16 +34,18 @@ class BoggleGui:
                 )
                 frame.grid(row=i, column=j)
                 button = tki.Button(master=frame, text='?', padx=30, pady=30,
-                                    relief=tki.RIDGE)
+                                    relief=tki.RIDGE,bg=MAIN_COLOR)
                 self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
         self.pack()
+
 
     def pack(self):
         self.count_label.pack(side=tki.TOP)
         self.start_button.pack(side=tki.TOP)
         self.mid_frame.pack(padx=40, pady=0)
         self.submit_button.pack()
+        self.correct_word_label.pack(side=tki.BOTTOM)
         self.score_label.pack(padx=10, pady=20)
 
     def set_submit_button_command(self, func: Callable):
@@ -62,19 +64,24 @@ class BoggleGui:
                 button.configure(height=1, width=1, text=letter)
                 count += 1
 
-    def create_button_command(self, coor) -> Callable:
+    def show_correct_word(self,word):
+        self.correct_word_label.configure(text=f" Word list : {word}")
+
+    def create_button_command(self, coor, button) -> Callable:
         def cmd():
             if coor not in self.current_path:
                 self.current_path.append(coor)
             else:
                 self.current_path.remove(coor)
+            button["bg"] = "red"
         return cmd
 
     def initiate_buttons_actions(self):
         for button in self.buttons_list:
             coor = self.buttons_loc_dict[button]
-            func = self.create_button_command(coor)
+            func = self.create_button_command(coor,button)
             button.configure(command=func)
+
 
     def set_label_score(self, points):
         self.score_label.configure(text=f"score: {points}")

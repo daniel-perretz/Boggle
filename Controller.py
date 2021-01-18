@@ -21,11 +21,15 @@ class BoggleController:
     def submit(self):
         self.model.cur_path = self.gui.current_path
         if self.model.handle_word() == True:
-            #todo: show in found words
+            word = "banana"
+            self.gui.show_correct_word(word)
             self.gui.set_label_score(self.model.get_points())
-            pass
+
         else:
             self.gui.current_path = []
+        for button in self.gui.buttons_list:
+            button["bg"] = MAIN_COLOR
+
 
     def run(self) -> None:
         self.gui.run()
