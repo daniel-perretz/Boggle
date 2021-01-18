@@ -1,6 +1,8 @@
 from boggle_gui import *
 from ex12_utils import *
 from Model import *
+import tkinter as tk
+import time
 
 class BoggleController:
 
@@ -13,7 +15,6 @@ class BoggleController:
 
     def run(self) -> None:
         self.gui.run()
-
 
 
 if __name__ == "__main__":
