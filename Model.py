@@ -44,6 +44,7 @@ class Model:
     def get_points(self):
         return self.__points
 
+
     def get_found_words(self):
         return self.__found_words
 
