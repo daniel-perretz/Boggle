@@ -46,6 +46,9 @@ class BoggleGui:
         self.submit_button.pack()
         self.score_label.pack(padx=10, pady=20)
 
+    def set_submit_button_command(self, func: Callable):
+        self.submit_button.configure(command=func)
+
     def set_start_button_command(self, func: Callable):
         self.start_button.configure(command=func)
 
@@ -73,7 +76,7 @@ class BoggleGui:
             func = self.create_button_command(coor)
             button.configure(command=func)
 
-    def show_label_score(self, points):
+    def set_label_score(self, points):
         self.score_label.configure(text=f"score: {points}")
 
     def countdown(self, t):
