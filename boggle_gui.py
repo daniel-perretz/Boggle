@@ -5,7 +5,7 @@ GAME_LENGTH = 180  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 MAIN_COLOR = "grey"
-LOGO_PATH = "/Volumes/GoogleDrive/My Drive/Intro2cs/ex12_git/boggle_logo.png"
+LOGO_PATH = "boggle_logo.png"
 
 class BoggleGui:
     def __init__(self):
