@@ -1,11 +1,12 @@
 import tkinter as tki
-from typing import Callable, Dict, List, Any
+from typing import Callable, Dict, Tuple, List, Any
 
 GAME_LENGTH = 180  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 MAIN_COLOR = "grey"
 LOGO_PATH = "boggle_logo.png"
+
 
 class BoggleGui:
     def __init__(self):
@@ -30,10 +31,10 @@ class BoggleGui:
 
         self.is_counting: bool = False
         self.buttons_list = []
-        self.buttons_loc_dict: Dict = {}
+        self.buttons_loc_letter_dict: Dict = {}
         self.current_path: list = []
+        self.current_word: List[str] = []
         self.found_words = []
-
 
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
@@ -43,11 +44,10 @@ class BoggleGui:
                 )
                 frame.grid(row=i, column=j)
                 button = tki.Button(master=frame, text='?', padx=30, pady=30,
-                                    relief=tki.RIDGE,bg=MAIN_COLOR)
+                                    relief=tki.RIDGE, bg=MAIN_COLOR)
                 self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
         self.pack()
-
 
     def pack(self):
         self.logo_label.pack(side=tki.TOP)
@@ -65,13 +65,20 @@ class BoggleGui:
     def set_start_button_command(self, func: Callable):
         self.start_button.configure(command=func)
 
+    def set_current_word_label(self):
+        output = ""
+        for letter in self.current_word:
+            output += letter
+        self.current_word_label.configure(text =f" Current Word: {output}")
+
+
     def set_buttons_text(self, board):
         count = 0
         for row in range(len(board)):
             for col in range(len(board[row])):
                 button = self.buttons_list[count]
                 letter = board[row][col]
-                self.buttons_loc_dict[button] = (row, col)
+                self.buttons_loc_letter_dict[button] = ((row, col), letter)
                 button.configure(height=1, width=1, text=letter)
                 count += 1
 
@@ -90,15 +97,21 @@ class BoggleGui:
         def cmd():
             if coor not in self.current_path:
                 self.current_path.append(coor)
+                letter: str = self.buttons_loc_letter_dict[button][1]
+                self.current_word.append(letter)
             else:
                 self.current_path.remove(coor)
+                self.current_word.remove(
+                    self.buttons_loc_letter_dict[button][1])  # the letter
+            self.set_current_word_label()
             button["bg"] = "red"
+
         return cmd
 
     def initiate_buttons_actions(self):
         for button in self.buttons_list:
-            coor = self.buttons_loc_dict[button]
-            func = self.create_button_command(coor,button)
+            coor = self.buttons_loc_letter_dict[button][0]
+            func = self.create_button_command(coor, button)
             button.configure(command=func)
 
     def set_label_score(self, points):
@@ -106,8 +119,10 @@ class BoggleGui:
 
     def countdown(self, t):
         if t <= 0:
-            self.count_label.configure(text="time's up!")
             self.is_counting = False
+            if not self.is_counting:
+                self.count_label.configure(text="time's up!")
+            self.start_button.configure(text="Play again?")
         else:
             m, s = divmod(t, 60)
             self.count_label.configure(text=f"{m}:{s}")

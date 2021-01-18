@@ -18,7 +18,7 @@ class BoggleController:
             self.gui.set_buttons_text(self.model.board)
             self.gui.initiate_buttons_actions()
         # else:
-            # self.model.restart()
+            #  self.model.restart()
 
     def submit(self):
         self.model.cur_path = self.gui.current_path
@@ -26,12 +26,17 @@ class BoggleController:
             word = self.model.get_found_words()[-1]
             self.gui.show_found_word(word)
             self.gui.set_label_score(self.model.get_points())
+            self.reset_current_path_and_word()
 
         else:
-            self.gui.current_path = []
+            self.reset_current_path_and_word()
         for button in self.gui.buttons_list:
             button["bg"] = MAIN_COLOR
 
+    def reset_current_path_and_word(self):
+        self.gui.current_path = []
+        self.gui.current_word = []
+        self.gui.set_current_word_label()
 
     def run(self) -> None:
         self.gui.run()
