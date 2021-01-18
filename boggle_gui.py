@@ -5,23 +5,27 @@ GAME_LENGTH = 180  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 MAIN_COLOR = "grey"
+LOGO_PATH = "/Volumes/GoogleDrive/My Drive/Intro2cs/ex12_git/boggle_logo.png"
 
 class BoggleGui:
     def __init__(self):
         self.root = tki.Tk()
         self.root.resizable(False, False)
-        self.correct_word_label = tki.Label(self.root,text="Word list: ", relief=tki.RIDGE,font=('helvetica', 15))
-        self.count_label = tki.Label(self.root, relief=tki.RIDGE,
+        # self.lower_frame = tki.Frame()
+        self.found_word_label = tki.Label(text="Word list: ", relief=tki.GROOVE, font=('helvetica', 15))
+        self.current_word_label = tki.Label(text=" Current Word: ", relief=tki.GROOVE)
+        self.count_label = tki.Label(relief=tki.RIDGE,
                                      font=('helvetica', 40))
+        self.logo = tki.PhotoImage(file=LOGO_PATH)
+        self.logo_label = tki.Label(image=self.logo)
         self.mid_frame = tki.Frame()
         self.buttons_list = []
         self.buttons_loc_dict: Dict = {}
         self.current_path: list = []
         self.start_button = tki.Button(
             self.root, text='Start Game', command=self.game_countdown,
-            padx=30, pady=30, relief=tki.RIDGE)
-        self.submit_button = tki.Button(
-            self.root, text='Submit',
+            padx=37, pady=20, relief=tki.RIDGE)
+        self.submit_button = tki.Button(text='Submit',
             padx=10, pady=10, relief=tki.RIDGE)
         self.score_label = tki.Label(text="Score: 0", relief=tki.RIDGE)
         self.is_counting: bool = False
@@ -41,12 +45,14 @@ class BoggleGui:
 
 
     def pack(self):
+        self.logo_label.pack(side=tki.TOP)
         self.count_label.pack(side=tki.TOP)
         self.start_button.pack(side=tki.TOP)
         self.mid_frame.pack(padx=40, pady=0)
+        self.current_word_label.pack()
         self.submit_button.pack()
-        self.correct_word_label.pack(side=tki.BOTTOM)
-        self.score_label.pack(padx=10, pady=20)
+        self.score_label.pack(padx=10, pady=10)
+        self.found_word_label.pack(pady=10)
 
     def set_submit_button_command(self, func: Callable):
         self.submit_button.configure(command=func)
@@ -65,7 +71,7 @@ class BoggleGui:
                 count += 1
 
     def show_correct_word(self,word):
-        self.correct_word_label.configure(text=f" Word list : {word}")
+        self.found_word_label.configure(text=f" Word list : {word}")
 
     def create_button_command(self, coor, button) -> Callable:
         def cmd():

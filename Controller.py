@@ -20,7 +20,7 @@ class BoggleController:
 
     def submit(self):
         self.model.cur_path = self.gui.current_path
-        if self.model.handle_word() == True:
+        if self.model.handle_word() is True:
             word = "banana"
             self.gui.show_correct_word(word)
             self.gui.set_label_score(self.model.get_points())
