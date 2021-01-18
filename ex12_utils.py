@@ -28,7 +28,7 @@ def is_valid_path(board, path, words):
     word = ''
     for coor in path:
         x, y = coor
-        word += board[x][y]  # join didnt work for some reason
+        word += board[x][y]
     if word in words:
         return word
     return None
@@ -41,9 +41,10 @@ def find_length_n_words(n, board, words):
         return []
     words_dict = minimize_dict(n, words)  # filters words that are too long
     output = []
-    for y in range(len(board)):
-        for x in range(len(board[0])):
-            output += finder_helper(n, "", [], (x, y), board, words_dict)
+    if words_dict:
+        for y in range(len(board)):
+            for x in range(len(board[0])):
+                output += finder_helper(n, "", [], (x, y), board, words_dict)
     return output
 
 
@@ -110,9 +111,6 @@ def main():
         ['T', 'E', 'R', 'W', 'H', 'V'],
         ['N', 'U', 'I', 'H', 'M', 'QU']
     ]
-
-    dic = load_words_dict("boggle_dict.txt")
-
 
 if __name__ == '__main__':
     board = [['C', 'A', 'T', 'Q'],
