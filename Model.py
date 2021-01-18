@@ -8,11 +8,14 @@ DICT_FILE_PATH = "boggle_dict.txt"
 class Model:
     def __init__(self):
         self.start: bool = False
-        self.board: List[List[str]] = randomize_board()
+        self.board: Optional[List[List[str]]] = []
         self.__points: int = 0
         self.__words_dict: Dict[str, bool] = load_words_dict(DICT_FILE_PATH)
         self.__found_words: List[str] = []
         self.cur_path: Optional[List[Tuple[int]]] = []
+
+    def create_board(self):
+        self.board = randomize_board()
 
     def handle_word(self) -> bool:
         word = is_valid_path(self.board, self.cur_path, self.__words_dict)

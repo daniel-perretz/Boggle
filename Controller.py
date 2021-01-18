@@ -5,12 +5,17 @@ from Model import *
 class BoggleController:
 
     def __init__(self):
-        self.gui = BoggleGui()
         self.model = Model()
+        self.gui = BoggleGui()
+        self.gui.show_label_score(self.model.get_points())
+        self.gui.set_start_button_command(self.start_game)
 
+    def start_game(self):
+        self.model.create_board()
+        self.gui.game_countdown()
         self.gui.set_buttons_text(self.model.board)
         self.gui.initiate_buttons_actions()
-        self.gui.show_label_score(self.model.get_points())
+
 
     def run(self) -> None:
         self.gui.run()
