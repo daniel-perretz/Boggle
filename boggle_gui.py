@@ -24,6 +24,7 @@ class BoggleGui:
             self.root, text='Submit',
             padx=10, pady=10, relief=tki.RIDGE)
         self.score_label = tki.Label(text="Score: 0", relief=tki.RIDGE)
+        self.is_counting: bool = False
 
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
@@ -78,6 +79,7 @@ class BoggleGui:
     def countdown(self, t):
         if t <= 0:
             self.count_label.configure(text="time's up!")
+            self.is_counting = False
         else:
             m, s = divmod(t, 60)
             self.count_label['text'] = f"{m}:{s}"
@@ -85,7 +87,9 @@ class BoggleGui:
         self.root.after(1000, self.countdown, (t - 1))
 
     def game_countdown(self):
+        self.is_counting = True
         self.countdown(GAME_LENGTH)
+        self.start_button["text"] = "Game Started..."
 
     def run(self) -> None:
         self.root.mainloop()

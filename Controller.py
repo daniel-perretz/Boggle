@@ -11,10 +11,11 @@ class BoggleController:
         self.gui.set_start_button_command(self.start_game)
 
     def start_game(self):
-        self.model.create_board()
-        self.gui.game_countdown()
-        self.gui.set_buttons_text(self.model.board)
-        self.gui.initiate_buttons_actions()
+        if not self.gui.is_counting:
+            self.model.create_board()
+            self.gui.game_countdown()
+            self.gui.set_buttons_text(self.model.board)
+            self.gui.initiate_buttons_actions()
 
 
     def run(self) -> None:
