@@ -17,12 +17,14 @@ class BoggleController:
             self.gui.game_countdown()
             self.gui.set_buttons_text(self.model.board)
             self.gui.initiate_buttons_actions()
+        # else:
+            # self.model.restart()
 
     def submit(self):
         self.model.cur_path = self.gui.current_path
         if self.model.handle_word() is True:
-            word = "banana"
-            self.gui.show_correct_word(word)
+            word = self.model.get_found_words()[-1]
+            self.gui.show_found_word(word)
             self.gui.set_label_score(self.model.get_points())
 
         else:

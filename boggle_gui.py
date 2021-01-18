@@ -11,24 +11,29 @@ class BoggleGui:
     def __init__(self):
         self.root = tki.Tk()
         self.root.resizable(False, False)
+
         # self.lower_frame = tki.Frame()
+        self.mid_frame = tki.Frame()
+
         self.found_word_label = tki.Label(text="Word list: ", relief=tki.GROOVE, font=('helvetica', 15))
         self.current_word_label = tki.Label(text=" Current Word: ", relief=tki.GROOVE)
         self.count_label = tki.Label(relief=tki.RIDGE,
                                      font=('helvetica', 40))
         self.logo = tki.PhotoImage(file=LOGO_PATH)
         self.logo_label = tki.Label(image=self.logo)
-        self.mid_frame = tki.Frame()
-        self.buttons_list = []
-        self.buttons_loc_dict: Dict = {}
-        self.current_path: list = []
         self.start_button = tki.Button(
             self.root, text='Start Game', command=self.game_countdown,
             padx=37, pady=20, relief=tki.RIDGE)
         self.submit_button = tki.Button(text='Submit',
-            padx=10, pady=10, relief=tki.RIDGE)
+                                        padx=10, pady=10, relief=tki.RIDGE)
         self.score_label = tki.Label(text="Score: 0", relief=tki.RIDGE)
+
         self.is_counting: bool = False
+        self.buttons_list = []
+        self.buttons_loc_dict: Dict = {}
+        self.current_path: list = []
+        self.found_words = []
+
 
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
@@ -70,8 +75,16 @@ class BoggleGui:
                 button.configure(height=1, width=1, text=letter)
                 count += 1
 
-    def show_correct_word(self,word):
-        self.found_word_label.configure(text=f" Word list : {word}")
+    def show_found_word(self, word):
+        self.found_words.append(word)
+        output = " Found words: "
+        for i in range(len(self.found_words)):
+            output += f" {self.found_words[i]}"
+            if i != (len(self.found_words) - 1):
+                output += ","
+            else:
+                output += "."
+        self.found_word_label.configure(text=output)
 
     def create_button_command(self, coor, button) -> Callable:
         def cmd():
@@ -88,7 +101,6 @@ class BoggleGui:
             func = self.create_button_command(coor,button)
             button.configure(command=func)
 
-
     def set_label_score(self, points):
         self.score_label.configure(text=f"score: {points}")
 
@@ -98,7 +110,7 @@ class BoggleGui:
             self.is_counting = False
         else:
             m, s = divmod(t, 60)
-            self.count_label['text'] = f"{m}:{s}"
+            self.count_label.configure(text=f"{m}:{s}")
 
         self.root.after(1000, self.countdown, (t - 1))
 
