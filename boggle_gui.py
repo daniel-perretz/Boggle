@@ -1,7 +1,7 @@
 import tkinter as tki
 from typing import Callable, Dict, Tuple, List, Any
 
-GAME_LENGTH = 180  # in seconds
+GAME_LENGTH = 20  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 MAIN_COLOR = "grey"
@@ -130,6 +130,7 @@ class BoggleGui:
             if not self.is_counting:
                 self.count_label.configure(text="time's up!")
             self.start_button.configure(text="Play again?")
+            return
         else:
             m, s = divmod(t, 60)
             if s // 10 == 0 and m // 10 == 0:
@@ -148,12 +149,17 @@ class BoggleGui:
         self.countdown(GAME_LENGTH)
         self.start_button["text"] = "Game Started..."
 
+    def reset(self):
+        self.current_word = []
+        self.found_words = []
+        self.current_path = []
+
     def run(self) -> None:
         self.root.mainloop()
 
 
+
 if __name__ == "__main__":
     cg = BoggleGui()
-    cg.count_label["text"] = "3:00"
     cg.run()
     # init_game()

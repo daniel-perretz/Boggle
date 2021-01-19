@@ -17,8 +17,9 @@ class BoggleController:
             self.gui.game_countdown()
             self.gui.set_buttons_text(self.model.board)
             self.gui.initiate_buttons_actions()
-        # else:
-            #  self.model.restart()
+        else:
+            self.model.restart()
+            self.gui.reset()
 
     def submit(self):
         self.model.cur_path = self.gui.current_path
