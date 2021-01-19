@@ -27,7 +27,6 @@ class BoggleController:
             self.gui.show_found_word(word)
             self.gui.set_label_score(self.model.get_points())
             self.reset_current_path_and_word()
-
         else:
             self.reset_current_path_and_word()
         for button in self.gui.buttons_list:

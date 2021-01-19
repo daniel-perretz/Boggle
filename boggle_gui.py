@@ -14,12 +14,15 @@ class BoggleGui:
         self.root.resizable(False, False)
 
         # self.lower_frame = tki.Frame()
-        self.mid_frame = tki.Frame()
+        self.mid_frame = tki.Frame(padx=40,pady=30)
 
-        self.found_word_label = tki.Label(text="Word list: ", relief=tki.GROOVE, font=('helvetica', 15))
-        self.current_word_label = tki.Label(text=" Current Word: ", relief=tki.GROOVE)
-        self.count_label = tki.Label(relief=tki.RIDGE,
-                                     font=('helvetica', 40))
+        self.found_word_label = tki.Label(text="Word list: ",
+                                          relief=tki.GROOVE,
+                                          font=('helvetica', 15))
+        self.current_word_label = tki.Label(text=" Current Word: ",
+                                            relief=tki.GROOVE,padx=10,
+                                            pady=10)
+        self.count_label = tki.Label(font=('helvetica', 40))
         self.logo = tki.PhotoImage(file=LOGO_PATH)
         self.logo_label = tki.Label(image=self.logo)
         self.start_button = tki.Button(
@@ -27,7 +30,9 @@ class BoggleGui:
             padx=37, pady=20, relief=tki.RIDGE)
         self.submit_button = tki.Button(text='Submit',
                                         padx=10, pady=10, relief=tki.RIDGE)
-        self.score_label = tki.Label(text="Score: 0", relief=tki.RIDGE)
+        self.score_label = tki.Label(padx=32,pady=10,text="Score: 0", \
+                                                   relief=tki.RIDGE,
+                                     font=('helvetica', 15))
 
         self.is_counting: bool = False
         self.buttons_list = []
@@ -50,14 +55,14 @@ class BoggleGui:
         self.pack()
 
     def pack(self):
-        self.logo_label.pack(side=tki.TOP)
-        self.count_label.pack(side=tki.TOP)
-        self.start_button.pack(side=tki.TOP)
-        self.mid_frame.pack(padx=40, pady=0)
-        self.current_word_label.pack()
-        self.submit_button.pack()
-        self.score_label.pack(padx=10, pady=10)
-        self.found_word_label.pack(pady=10)
+        self.logo_label.grid()
+        self.count_label.grid()
+        self.start_button.grid()
+        self.mid_frame.grid(padx=40, pady=50)
+        self.current_word_label.place(relx=0.176, rely=0.910, anchor='sw')
+        self.submit_button.place(relx=0.83, rely=0.9155, anchor='se')
+        self.score_label.place(relx=0.5,rely=0.335,anchor="n")
+        self.found_word_label.grid()
 
     def set_submit_button_command(self, func: Callable):
         self.submit_button.configure(command=func)
@@ -96,15 +101,17 @@ class BoggleGui:
     def create_button_command(self, coor, button) -> Callable:
         def cmd():
             if coor not in self.current_path:
+                button["bg"] = "red"
                 self.current_path.append(coor)
                 letter: str = self.buttons_loc_letter_dict[button][1]
                 self.current_word.append(letter)
             else:
+                button["bg"] = MAIN_COLOR
+
                 self.current_path.remove(coor)
                 self.current_word.remove(
                     self.buttons_loc_letter_dict[button][1])  # the letter
             self.set_current_word_label()
-            button["bg"] = "red"
 
         return cmd
 
