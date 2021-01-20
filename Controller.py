@@ -13,6 +13,8 @@ class BoggleController:
 
     def start_game(self):
         if not self.gui.is_counting:
+            if self.gui.ask_for_a_break() == True:
+                return
             self.model.create_board()
             self.gui.game_countdown()
             self.gui.set_buttons_text(self.model.board)

@@ -1,17 +1,23 @@
 import tkinter as tki
+from tkinter import messagebox
 from typing import Callable, Dict, Tuple, List, Any
 
 # game preferences:
 GAME_LENGTH = 20  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
+ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
 
-# buttons' texts:
+# texts:
 START_BTN_MSG = 'Start Game'
 MID_GAME_MSG = "Game Started..."
-GAME_OVER_MSG = "time's up!"
+GAME_OVER_MSG = "Time's up!"
 PLAY_AGAIN_MSG = "Play again?"
 SUBMIT_BTN_MSG = 'Submit'
+BREAK_PROMPT_MSG = "Games are fun, but can be addictive. Would you like to " \
+                   "take a break? \n" \
+          "Don't worry, Boggle will wait for you here when you get back"
+BREAK_PROMPT_TITLE = "Time for a break?"
 
 # labels' intros:
 SCORE_INTRO = "Score: "
@@ -58,6 +64,7 @@ class BoggleGui:
         self.current_path: list = []
         self.current_word: List[str] = []
         self.found_words = []
+        self.took_a_break = False
 
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
@@ -176,6 +183,16 @@ class BoggleGui:
 
         self.root.after(1000, self.countdown, (time - 1))
 
+    def ask_for_a_break(self):
+        if self.took_a_break is False and self.games_played != 0 and \
+                self.games_played % ASK_FOR_BREAK_INTERVAL == 0:
+            if messagebox.askquestion(BREAK_PROMPT_TITLE, BREAK_PROMPT_MSG) \
+                    == "yes":
+                self.took_a_break = True
+                return True
+            else:
+                return False
+
     def reset(self):
         self.current_word = []
         self.found_words = []
@@ -190,3 +207,4 @@ class BoggleGui:
 if __name__ == "__main__":
     cg = BoggleGui()
     cg.run()
+
