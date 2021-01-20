@@ -62,7 +62,7 @@ class BoggleGui:
         self.buttons_list = []
         self.buttons_loc_letter_dict: Dict = {}
         self.current_path: list = []
-        self.current_word: List[str] = []
+        self.coor_letter_dict: Dict[Tuple[int, int], str] = {}
         self.found_words = []
         self.took_a_break = False
 
@@ -100,8 +100,8 @@ class BoggleGui:
 
     def set_current_word_label(self):
         output = ""
-        for letter in self.current_word:
-            output += letter
+        for coor in self.coor_letter_dict:
+            output += self.coor_letter_dict[coor]
         self.current_word_label.configure(text=f"{CUR_WORD_INTRO}{output}")
 
     def set_buttons_text(self, board):
@@ -122,13 +122,12 @@ class BoggleGui:
                 button["bg"] = "red"
                 self.current_path.append(coor)
                 letter: str = self.buttons_loc_letter_dict[button][1]
-                self.current_word.append(letter)
+                self.coor_letter_dict[coor] = letter
             else:
                 button["bg"] = MAIN_COLOR
 
                 self.current_path.remove(coor)
-                self.current_word.remove(
-                    self.buttons_loc_letter_dict[button][1])  # the letter
+                del self.coor_letter_dict[coor]
             self.set_current_word_label()
         return cmd
 
@@ -194,7 +193,7 @@ class BoggleGui:
                 return False
 
     def reset(self):
-        self.current_word = []
+        self.coor_letter_dict = {}
         self.found_words = []
         self.current_path = []
         self.current_word_label.configure(text=CUR_WORD_INTRO)

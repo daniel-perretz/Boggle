@@ -41,7 +41,7 @@ class BoggleController:
 
     def reset_current_path_and_word(self):
         self.gui.current_path = []
-        self.gui.current_word = []
+        self.gui.coor_letter_dict = {}
         self.gui.set_current_word_label()
 
     def run(self) -> None:
