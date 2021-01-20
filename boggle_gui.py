@@ -19,9 +19,10 @@ BREAK_PROMPT_TITLE = "Time for a break?"
 # labels' intros:
 SCORE_INTRO = "Score: "
 CUR_WORD_INTRO = " Current Word: "
-FOUND_WORDS_INTRO = "Word list: "
+FOUND_WORDS_INTRO = "Found Words: "
 
 # design:
+TITLE = "~ Boggle ~  by Daniel and Tamir"
 FONT = 'helvetica'
 MAIN_COLOR = "grey"
 LOGO_PATH = "boggle_logo.png"
@@ -30,11 +31,11 @@ class BoggleGui:
     def __init__(self):
         self.root = tki.Tk()
         self.root.resizable(False, False)
-
+        self.root.title(TITLE)
         # self.lower_frame = tki.Frame()
         self.mid_frame = tki.Frame(padx=40, pady=30)
 
-        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO, width=40,
+        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15))
         self.current_word_label = tki.Label(text=CUR_WORD_INTRO
@@ -80,10 +81,12 @@ class BoggleGui:
         self.count_label.grid()
         self.start_button.grid()
         self.mid_frame.grid(padx=40, pady=50)
-        self.current_word_label.place(relx=0.150, rely=0.930, anchor='sw')
-        self.submit_button.place(relx=0.82, rely=0.937, anchor='se')
-        self.score_label.place(relx=0.5, rely=0.335, anchor="n")
-        self.found_word_label.grid(row=4)
+        self.current_word_label.place(relx=0.150, rely=0.905, anchor='sw')
+        self.submit_button.place(relx=0.82, rely=0.910, anchor='se')
+        self.score_label.place(relx=0.5, rely=0.310, anchor="n")
+        self.found_word_label.grid(row=4, pady=10, padx=10)
+        white_space = tki.Label()
+        white_space.grid(row=5)
 
     def set_submit_button_command(self, func: Callable):
         self.submit_button.configure(command=func)
