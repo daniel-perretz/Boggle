@@ -88,6 +88,9 @@ class BoggleGui:
     def set_start_button_command(self, func: Callable):
         self.start_button.configure(command=func)
 
+    def set_label_score(self, points):
+        self.score_label.configure(text=f"{SCORE_INTRO}{points}")
+
     def set_current_word_label(self):
         output = ""
         for letter in self.current_word:
@@ -103,17 +106,6 @@ class BoggleGui:
                 self.buttons_loc_letter_dict[button] = ((row, col), letter)
                 button.configure(height=1, width=1, text=letter)
                 count += 1
-
-    def show_found_word(self, word):
-        self.found_words.append(word)
-        output = FOUND_WORDS_INTRO
-        for i in range(len(self.found_words)):
-            output += f" {self.found_words[i]}"
-            if i != (len(self.found_words) - 1):
-                output += ","
-            else:
-                output += "."
-        self.found_word_label.configure(text=output)
 
     def create_button_command(self, coor, button) -> Callable:
         def cmd():
@@ -131,7 +123,6 @@ class BoggleGui:
                 self.current_word.remove(
                     self.buttons_loc_letter_dict[button][1])  # the letter
             self.set_current_word_label()
-
         return cmd
 
     def initiate_buttons_actions(self):
@@ -140,10 +131,29 @@ class BoggleGui:
             func = self.create_button_command(coor, button)
             button.configure(command=func)
 
-    def set_label_score(self, points):
-        self.score_label.configure(text=f"{SCORE_INTRO}{points}")
+    def show_found_word(self, word):
+        self.found_words.append(word)
+        output = FOUND_WORDS_INTRO
+        for i in range(len(self.found_words)):
+            output += f" {self.found_words[i]}"
+            if i != (len(self.found_words) - 1):
+                output += ","
+            else:
+                output += "."
+        self.found_word_label.configure(text=output)
 
-    def update_highscore(self, score):
+    def show_formatted_time(self, time):
+        min, sec = divmod(time, 60)
+        if sec // 10 == 0 and min // 10 == 0:
+            self.count_label.configure(text=f"0{min}:0{sec}")
+        elif sec // 10 == 0:
+            self.count_label.configure(text=f"{min}:0{sec}")
+        elif min // 10 == 0:
+            self.count_label.configure(text=f"0{min}:{sec}")
+        else:
+            self.count_label.configure(text=f"{min}:{sec}")
+
+    def update_and_show_highscore(self, score):
         if score > self.highscore:
             self.highscore = score
             #todo: update label
@@ -166,17 +176,6 @@ class BoggleGui:
 
         self.root.after(1000, self.countdown, (time - 1))
 
-    def show_formatted_time(self, time):
-        min, sec = divmod(time, 60)
-        if sec // 10 == 0 and min // 10 == 0:
-            self.count_label.configure(text=f"0{min}:0{sec}")
-        elif sec // 10 == 0:
-            self.count_label.configure(text=f"{min}:0{sec}")
-        elif min // 10 == 0:
-            self.count_label.configure(text=f"0{min}:{sec}")
-        else:
-            self.count_label.configure(text=f"{min}:{sec}")
-
     def reset(self):
         self.current_word = []
         self.found_words = []
@@ -191,4 +190,3 @@ class BoggleGui:
 if __name__ == "__main__":
     cg = BoggleGui()
     cg.run()
-    # init_game()
