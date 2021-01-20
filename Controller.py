@@ -38,7 +38,6 @@ class BoggleController:
             for button in self.gui.buttons_list:
                 button["bg"] = MAIN_COLOR
 
-
     def reset_current_path_and_word(self):
         self.gui.current_path = []
         self.gui.coor_letter_dict = {}

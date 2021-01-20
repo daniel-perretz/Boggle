@@ -14,9 +14,6 @@ MID_GAME_MSG = "Game Started..."
 GAME_OVER_MSG = "Time's up!"
 PLAY_AGAIN_MSG = "Play again?"
 SUBMIT_BTN_MSG = 'Submit'
-BREAK_PROMPT_MSG = "Games are fun, but can be addictive. Would you like to " \
-                   "take a break? \n" \
-          "Don't worry, Boggle will wait for you here when you get back"
 BREAK_PROMPT_TITLE = "Time for a break?"
 
 # labels' intros:
@@ -40,9 +37,8 @@ class BoggleGui:
         self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15))
-        self.current_word_label = tki.Label(text=CUR_WORD_INTRO,
-                                            relief=tki.GROOVE, padx=10,
-                                            pady=10)
+        self.current_word_label = tki.Label(text=CUR_WORD_INTRO
+                                            , pady=5, font=(FONT, 16))
         self.count_label = tki.Label(font=(FONT, 40))
         self.show_formatted_time(GAME_LENGTH)
         self.logo = tki.PhotoImage(file=LOGO_PATH)
@@ -51,7 +47,7 @@ class BoggleGui:
             self.root, text=START_BTN_MSG, command=self.game_countdown,
             padx=37, pady=20, relief=tki.RIDGE)
         self.submit_button = tki.Button(text=SUBMIT_BTN_MSG,
-                                        padx=10, pady=10, relief=tki.RIDGE)
+                                        padx=10, pady=12, relief=tki.RIDGE)
         self.score_label = tki.Label(padx=32, pady=10, text=f"{SCORE_INTRO}0",
                                      relief=tki.RIDGE,
                                      font=(FONT, 15))
@@ -84,8 +80,8 @@ class BoggleGui:
         self.count_label.grid()
         self.start_button.grid()
         self.mid_frame.grid(padx=40, pady=50)
-        self.current_word_label.place(relx=0.176, rely=0.910, anchor='sw')
-        self.submit_button.place(relx=0.83, rely=0.9155, anchor='se')
+        self.current_word_label.place(relx=0.150, rely=0.930, anchor='sw')
+        self.submit_button.place(relx=0.82, rely=0.937, anchor='se')
         self.score_label.place(relx=0.5, rely=0.335, anchor="n")
         self.found_word_label.grid()
 
@@ -100,7 +96,9 @@ class BoggleGui:
 
     def set_current_word_label(self):
         output = ""
-        for coor in self.coor_letter_dict:
+        for i, coor in enumerate(self.coor_letter_dict):
+            if i != 0 and i % 9 == 0:
+                output = "        \n" + output
             output += self.coor_letter_dict[coor]
         self.current_word_label.configure(text=f"{CUR_WORD_INTRO}{output}")
 
@@ -183,6 +181,12 @@ class BoggleGui:
         self.root.after(1000, self.countdown, (time - 1))
 
     def ask_for_a_break(self):
+        BREAK_PROMPT_MSG = f"Games are fun, but can be addictive." \
+                           f" You already played" \
+                           f" {self.games_played} games, would you like to " \
+                           "take a break? \n" \
+                           "Don't worry, Boggle will wait for you here when" \
+                           " you get back"
         if self.took_a_break is False and self.games_played != 0 and \
                 self.games_played % ASK_FOR_BREAK_INTERVAL == 0:
             if messagebox.askquestion(BREAK_PROMPT_TITLE, BREAK_PROMPT_MSG) \
