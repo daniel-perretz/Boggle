@@ -3,7 +3,7 @@ from tkinter import messagebox
 from typing import Callable, Dict, Tuple, List, Any
 
 # game preferences:
-GAME_LENGTH = 20  # in seconds
+GAME_LENGTH = 60  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
@@ -34,7 +34,7 @@ class BoggleGui:
         # self.lower_frame = tki.Frame()
         self.mid_frame = tki.Frame(padx=40, pady=30)
 
-        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
+        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO, width=40,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15))
         self.current_word_label = tki.Label(text=CUR_WORD_INTRO
