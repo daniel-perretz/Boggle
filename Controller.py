@@ -24,6 +24,7 @@ class BoggleController:
                 self.model.reset()
                 self.gui.reset()
                 self.gui.set_label_score(self.model.get_points())
+                button["bg"] = MAIN_COLOR
 
     def submit(self):
         if self.gui.is_counting:
