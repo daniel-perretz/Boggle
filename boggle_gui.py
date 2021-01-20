@@ -2,7 +2,7 @@ import tkinter as tki
 from typing import Callable, Dict, Tuple, List, Any
 
 # game preferences:
-GAME_LENGTH = 180  # in seconds
+GAME_LENGTH = 20  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 
@@ -116,6 +116,8 @@ class BoggleGui:
 
     def create_button_command(self, coor, button) -> Callable:
         def cmd():
+            if not self.is_counting:
+                return
             if coor not in self.current_path:
                 button["bg"] = "red"
                 self.current_path.append(coor)
@@ -173,6 +175,8 @@ class BoggleGui:
         self.current_word = []
         self.found_words = []
         self.current_path = []
+        self.current_word_label.configure(text=CUR_WORD_INTRO)
+        self.found_word_label.configure(text=FOUND_WORDS_INTRO)
 
     def run(self) -> None:
         self.root.mainloop()

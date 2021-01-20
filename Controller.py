@@ -17,22 +17,25 @@ class BoggleController:
             self.gui.game_countdown()
             self.gui.set_buttons_text(self.model.board)
             self.gui.initiate_buttons_actions()
-        else:
-            self.model.restart()
-            self.gui.reset()
-            self.gui.set_label_score(self.model.get_points())
+
+            if self.gui.games_played > 0:
+                self.model.reset()
+                self.gui.reset()
+                self.gui.set_label_score(self.model.get_points())
 
     def submit(self):
-        self.model.cur_path = self.gui.current_path
-        if self.model.handle_word() is True:
-            word = self.model.get_found_words()[-1]
-            self.gui.show_found_word(word)
-            self.gui.set_label_score(self.model.get_points())
-            self.reset_current_path_and_word()
-        else:
-            self.reset_current_path_and_word()
-        for button in self.gui.buttons_list:
-            button["bg"] = MAIN_COLOR
+        if self.gui.is_counting:
+            self.model.cur_path = self.gui.current_path
+            if self.model.handle_word() is True:
+                word = self.model.get_found_words()[-1]
+                self.gui.show_found_word(word)
+                self.gui.set_label_score(self.model.get_points())
+                self.reset_current_path_and_word()
+            else:
+                self.reset_current_path_and_word()
+            for button in self.gui.buttons_list:
+                button["bg"] = MAIN_COLOR
+
 
     def reset_current_path_and_word(self):
         self.gui.current_path = []

@@ -34,11 +34,9 @@ class Model:
     def update_points(self, n) -> None:
         self.__points += n ** 2
 
-    def restart(self):
+    def reset(self):
         self.__points = 0
         self.cur_path = []
-        self.board = randomize_board()
-        self.__words_dict = load_words_dict(DICT_FILE_PATH)
         self.__found_words = []
 
     def get_points(self):
