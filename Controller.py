@@ -24,7 +24,8 @@ class BoggleController:
                 self.model.reset()
                 self.gui.reset()
                 self.gui.set_label_score(self.model.get_points())
-                button["bg"] = MAIN_COLOR
+            self.gui.reset_buttons_color()
+
 
     def submit(self):
         if self.gui.is_counting:
@@ -36,8 +37,7 @@ class BoggleController:
                 self.reset_current_path_and_word()
             else:
                 self.reset_current_path_and_word()
-            for button in self.gui.buttons_list:
-                button["bg"] = MAIN_COLOR
+            self.gui.reset_buttons_color()
 
     def reset_current_path_and_word(self):
         self.gui.current_path = []

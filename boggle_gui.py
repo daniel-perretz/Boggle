@@ -162,6 +162,10 @@ class BoggleGui:
             self.highscore = score
             #todo: update label
 
+    def reset_buttons_color(self):
+        for button in self.buttons_list:
+            button["bg"] = MAIN_COLOR
+
     def game_countdown(self):
         self.is_counting = True
         self.countdown(GAME_LENGTH)
