@@ -83,7 +83,7 @@ class BoggleGui:
         self.current_word_label.place(relx=0.150, rely=0.930, anchor='sw')
         self.submit_button.place(relx=0.82, rely=0.937, anchor='se')
         self.score_label.place(relx=0.5, rely=0.335, anchor="n")
-        self.found_word_label.grid()
+        self.found_word_label.grid(row=4)
 
     def set_submit_button_command(self, func: Callable):
         self.submit_button.configure(command=func)
