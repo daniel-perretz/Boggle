@@ -1,6 +1,6 @@
 from boggle_gui import *
-from ex12_utils import *
 from Model import *
+
 
 class BoggleController:
 
@@ -20,6 +20,7 @@ class BoggleController:
         else:
             self.model.restart()
             self.gui.reset()
+            self.gui.set_label_score(self.model.get_points())
 
     def submit(self):
         self.model.cur_path = self.gui.current_path

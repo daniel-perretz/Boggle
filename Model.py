@@ -7,7 +7,6 @@ DICT_FILE_PATH = "boggle_dict.txt"
 
 class Model:
     def __init__(self):
-        self.start: bool = False
         self.board: Optional[List[List[str]]] = []
         self.__points: int = 0
         self.__words_dict: Dict[str, bool] = load_words_dict(DICT_FILE_PATH)
@@ -32,14 +31,12 @@ class Model:
                 self.cur_path = []
                 return True
 
-    # def update_cur_path(self, coor):
-    #     self.cur_path.append(coor)
-
     def update_points(self, n) -> None:
         self.__points += n ** 2
 
     def restart(self):
         self.__points = 0
+        self.cur_path = []
         self.board = randomize_board()
         self.__words_dict = load_words_dict(DICT_FILE_PATH)
         self.__found_words = []
