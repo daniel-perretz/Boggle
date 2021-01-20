@@ -52,6 +52,7 @@ class BoggleGui:
 
         self.is_counting: bool = False
         self.games_played: int = 0
+        self.highscore: int = 0
         self.buttons_list = []
         self.buttons_loc_letter_dict: Dict = {}
         self.current_path: list = []
@@ -141,6 +142,11 @@ class BoggleGui:
 
     def set_label_score(self, points):
         self.score_label.configure(text=f"{SCORE_INTRO}{points}")
+
+    def update_highscore(self, score):
+        if score > self.highscore:
+            self.highscore = score
+            #todo: update label
 
     def game_countdown(self):
         self.is_counting = True
