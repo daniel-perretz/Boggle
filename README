@@ -1,1 +1,18 @@
-<Describe your project's features here>
+1)~ Highscore ~
+The game displays the highest score the user has achieved so far.
+
+2) ~ Automatic Break reminder ~
+A sort of "parental-control" that activates a reminder to take a break after
+every a certain number of consecutive games (that can be configured to any
+other number). A window pops up, showing how many games have been played so far
+and asking the player if it wants to take a break or not. If the player chooses
+to do so, the reminder won't appear again. If he decided not to, the window
+would pop up after the same amount of games again, until he (hopefully) does :)
+
+3) 'Retro' responsive buttons designed by us (based on an empty buttons we
+found on the web):
+In order to keep our design  minimalistic, we only designed two buttons -
+The first 'multi-purpose' button switches between starting the game, restarting
+, and mid-game state automatically. The second button is a responsive 8-bit
+"submit" button we designed ourselves using an 8 bit font. Along with the rest
+of the layout, we hoped to achieve an 'arcade' nostalgic feeling to the game.

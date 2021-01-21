@@ -7,7 +7,9 @@ DICT_FILE_PATH = "boggle_dict.txt"
 
 class Model:
     """ This class is responsible for the logics behind the game, that
-    do not have an obvious visual representations"""
+    do not have an obvious visual representations - mainly the board and
+    checking words validity"""
+
     def __init__(self):
         """ Initializes the game's utilities"""
         self.board: Optional[List[List[str]]] = []

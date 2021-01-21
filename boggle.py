@@ -15,7 +15,7 @@ class BoggleController:
     def start_game(self):
         """ Starts or restart the game, depending on the state of the game"""
         if not self.gui.is_counting:
-            if self.gui.ask_for_a_break() == True:
+            if self.gui.ask_for_a_break() is True:
                 return
             self.model.create_board()
             self.gui.game_countdown()

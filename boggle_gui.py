@@ -87,9 +87,9 @@ class BoggleGui:
         self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15), bg=LABEL_COLOR)
-        self.current_word_label = tki.Label \
-            (text=CUR_WORD_INTRO, pady=5, font=(FONT, 13), bg=BG_COLOR,
-             fg=TEXT_COLOR)
+        self.current_word_label = tki.Label(
+            text=CUR_WORD_INTRO, pady=5, font=(FONT, 13),
+            bg=BG_COLOR, fg=TEXT_COLOR)
         self.count_label = tki.Label(font=(FONT, 40), bg=BG_COLOR,
                                      fg=TEXT_COLOR)
         self.show_formatted_time(GAME_LENGTH)
@@ -99,8 +99,8 @@ class BoggleGui:
                                      relief=tki.RIDGE, font=(FONT, 20),
                                      bg=LABEL_COLOR)
         self.logo_label = tki.Label(image=self.logo, bg=BG_COLOR)
-        self.display_word_label = tki.Label \
-            (bg=BG_COLOR, font=(FONT, 13, "bold"), fg=TEXT_COLOR)
+        self.display_word_label = tki.Label(bg=BG_COLOR, fg=TEXT_COLOR,
+                                            font=(FONT, 13, "bold"))
         # show buttons:
         self.start_button = tki.Button(
             self.root, text=START_BTN_MSG, command=self.game_countdown,
@@ -110,21 +110,6 @@ class BoggleGui:
         self.create_and_place_buttons()
 
         self.pack()
-
-    def create_and_place_buttons(self):
-        """ This function creates buttons and places them in a grid
-        note: it does not activates an action when they are pressed"""
-        for i in range(NUM_COLS):
-            for j in range(NUM_ROWS):
-                frame = tki.Frame(
-                    master=self.mid_frame,
-                    relief=tki.RAISED,
-                )
-                frame.grid(row=i, column=j)
-                button = tki.Button(master=frame, text='?', padx=31, pady=31,
-                                    relief=tki.RAISED, bg=BUTTON_COLOR)
-                self.buttons_list.append(button)
-                button.grid(padx=0, pady=0)
 
     def pack(self):
         """this function organizes widgets frames and
@@ -141,33 +126,11 @@ class BoggleGui:
         white_space = tki.Label(bg=BG_COLOR)
         white_space.grid(row=5)
 
-    def set_submit_button_command(self, func: Callable):
-        """this function uses the configure method to
-         make for the method to be
-        called
-        when the button is clicked. """
-        self.submit_button.configure(command=func)
-
-    def set_start_button_command(self, func: Callable):
-        self.start_button.configure(command=func)
-
+    # set labels:
     def set_label_score(self, points):
+        """Shows both score and high score in the appropriate label"""
         self.score_label.configure(text=f"{SCORE_INTRO}{points}   "
                                         f"{HIGHSCORE_INTRO}{self.highscore}")
-
-    def set_game_started_btn(self):
-        self.start_button.configure(image=self.bn_game_started)
-
-    def set_play_again_btn(self):
-        self.start_button.configure(image=self.bn_play_again)
-
-    def revert_submit(self):
-        self.submit_button.configure(image=self.bh_submit)
-
-    def change_to_pressed(self):
-        """ Changes the submit button's image to look like it is 'pressed'"""
-        self.submit_button["image"] = self.bh_pressed_submit
-        self.root.after(200, self.revert_submit)
 
     def set_current_word_label(self):
         """ Calculates which letters to show, based on the coordinates
@@ -176,6 +139,37 @@ class BoggleGui:
         for i, coor in enumerate(self.coor_letter_dict):
             output += self.coor_letter_dict[coor]
         self.display_word_label.configure(text=f"{output}")
+
+    def show_found_word(self, word):
+        """ Formats the found word's list and shows it in the appropriate
+        label"""
+        self.found_words.append(word)
+        output = FOUND_WORDS_INTRO
+        for i in range(len(self.found_words)):
+            output += f" {self.found_words[i]}"
+            if i != (len(self.found_words) - 1):
+                output += ","
+            else:
+                output += "."
+            if i != 0 and i % 15 == 0:
+                output += "\n"
+        self.found_word_label.configure(text=output)
+
+    # letter buttons methods:
+    def create_and_place_buttons(self):
+        """ This function creates buttons and places them in a grid
+        note: it does not activates an action when they are pressed"""
+        for i in range(NUM_COLS):
+            for j in range(NUM_ROWS):
+                frame = tki.Frame(
+                    master=self.mid_frame,
+                    relief=tki.RAISED,
+                )
+                frame.grid(row=i, column=j)
+                button = tki.Button(master=frame, text='?', padx=31, pady=31,
+                                    relief=tki.RAISED, bg=BUTTON_COLOR)
+                self.buttons_list.append(button)
+                button.grid(padx=0, pady=0)
 
     def set_buttons_text(self, board):
         """ Iterates through all the letters' buttons and sets their text
@@ -218,43 +212,48 @@ class BoggleGui:
             func = self.create_button_command(coor, button)
             button.configure(command=func)
 
-    def show_found_word(self, word):
-        """ Formats the found word's list and shows it in the appropriate
-        label"""
-        self.found_words.append(word)
-        output = FOUND_WORDS_INTRO
-        for i in range(len(self.found_words)):
-            output += f" {self.found_words[i]}"
-            if i != 0 and i % 15 == 0:
-                output += "\n"
-            if i != (len(self.found_words) - 1):
-                output += ","
-            else:
-                output += "."
-        self.found_word_label.configure(text=output)
+    # start button:
+    def set_start_button_command(self, func: Callable):
+        """ Receives a function and sets the start button to activate it
+         whenever it is pressed"""
+        self.start_button.configure(command=func)
 
+    def set_game_started_btn(self):
+        """ Changes the start button's image to its mid-game appearance """
+        self.start_button.configure(image=self.bn_game_started)
+
+    def set_play_again_btn(self):
+        """ Changes the start button's image to offer the user to play again"""
+        self.start_button.configure(image=self.bn_play_again)
+
+    # submit button methods:
+    def set_submit_button_command(self, func: Callable):
+        """This function uses the configure method to make for the method to be
+        called when the button is clicked. """
+        self.submit_button.configure(command=func)
+
+    def change_to_pressed(self):
+        """ Changes the submit button's image to look like it is 'pressed'"""
+        self.submit_button["image"] = self.bh_pressed_submit
+        self.root.after(200, self.revert_submit)
+
+    def revert_submit(self):
+        """Changes the submit button's image to look like it's not 'pressed'"""
+        self.submit_button.configure(image=self.bh_submit)
+
+    # clock methods:
     def show_formatted_time(self, time):
         """ Formats a time in second to minutes:seconds and shows it in the
         appropriate label"""
-        min, sec = divmod(time, 60)
-        if sec // 10 == 0 and min // 10 == 0:
-            self.count_label.configure(text=f"0{min}:0{sec}")
+        minute, sec = divmod(time, 60)
+        if sec // 10 == 0 and minute // 10 == 0:
+            self.count_label.configure(text=f"0{minute}:0{sec}")
         elif sec // 10 == 0:
-            self.count_label.configure(text=f"{min}:0{sec}")
-        elif min // 10 == 0:
-            self.count_label.configure(text=f"0{min}:{sec}")
+            self.count_label.configure(text=f"{minute}:0{sec}")
+        elif minute // 10 == 0:
+            self.count_label.configure(text=f"0{minute}:{sec}")
         else:
-            self.count_label.configure(text=f"{min}:{sec}")
-
-    def update_highscore(self, score):
-        """Updates the highscore if necessary"""
-        if score > self.highscore:
-            self.highscore = score
-
-    def reset_buttons_color(self):
-        """ Changes all buttons to their default color"""
-        for button in self.buttons_list:
-            button["bg"] = BUTTON_COLOR
+            self.count_label.configure(text=f"{minute}:{sec}")
 
     def game_countdown(self):
         """Starts the countdown in the appropriate game time"""
@@ -276,6 +275,7 @@ class BoggleGui:
             self.show_formatted_time(time)
             self.root.after(1000, self.countdown, (time - 1))
 
+    # additional features:
     def ask_for_a_break(self) -> bool:
         """Asks the user to take a break after a certain amount of games.
         After he takes a break, he would not be asked to take another one,
@@ -297,6 +297,17 @@ class BoggleGui:
             else:
                 return False
 
+    def update_highscore(self, score):
+        """Updates the highscore if necessary"""
+        if score > self.highscore:
+            self.highscore = score
+
+    # reset methods:
+    def reset_buttons_color(self):
+        """ Changes all buttons to their default color"""
+        for button in self.buttons_list:
+            button["bg"] = BUTTON_COLOR
+
     def reset_current_path_and_word(self):
         """Empties the current path and word saved"""
         self.current_path = []
@@ -309,7 +320,7 @@ class BoggleGui:
         self.found_words = []
         self.found_word_label.configure(text=FOUND_WORDS_INTRO)
 
+    # run game:
     def run(self) -> None:
         """Runs the Graphic User Interface"""
         self.root.mainloop()
-
