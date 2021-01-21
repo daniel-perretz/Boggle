@@ -5,7 +5,7 @@ from typing import Callable, Dict, Tuple, List, Any
 # game preferences:
 HIGHSCORE_INTRO = "HIGHSCORE: "
 TEXT_COLOR = "white"
-GAME_LENGTH = 5  # in seconds
+GAME_LENGTH = 20  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
@@ -99,7 +99,7 @@ class BoggleGui:
                                      bg=LABEL_COLOR)
         self.logo_label = tki.Label(image=self.logo, bg=BG_COLOR)
         self.display_word_label = tki.Label \
-            (bg=BG_COLOR, font=(FONT, 20, "bold"), fg=TEXT_COLOR)
+            (bg=BG_COLOR, font=(FONT, 13, "bold"), fg=TEXT_COLOR)
         # show buttons:
         self.start_button = tki.Button(
             self.root, text=START_BTN_MSG, command=self.game_countdown,
@@ -135,7 +135,7 @@ class BoggleGui:
         self.submit_button.place(relx=0.82, rely=0.880, anchor='se')
         self.score_label.place(relx=0.5, rely=0.310, anchor="n")
         self.found_word_label.grid(row=4, pady=10, padx=10)
-        self.display_word_label.place(relx=0.150, rely=0.900, anchor='sw')
+        self.display_word_label.place(relx=0.150, rely=0.880, anchor='sw')
         white_space = tki.Label(bg=BG_COLOR)
         white_space.grid(row=5)
 
