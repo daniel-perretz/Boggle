@@ -6,6 +6,8 @@ MAX_DIFFERENCE = 1
 
 
 def load_words_dict(file_path):
+    """Filters all words from a file whose path was provided and returns a
+    dictionary whose keys are the words, and values the bool 'True'"""
     with open(file_path) as f:
         content = f.read().splitlines()
         word_dict = {x: True for x in content}
@@ -13,9 +15,12 @@ def load_words_dict(file_path):
 
 
 def is_valid_path(board, path, words):
+    """Checks if a certain coordinates path is valid - in board, adds up to
+    a word in dictionary, has a certain coordinate twice"""
     for coor in path:
         x, y = coor
-        if x > MAX_ROW or y > MAX_COL:
+        if x > MAX_ROW or y > MAX_COL or x < 0 or y < 0 \
+                or x * y > MAX_ROW * MAX_COL:
             return None
     for i in range(len(path) - 1):
         x1, y1 = path[i]
