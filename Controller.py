@@ -22,6 +22,7 @@ class BoggleController:
             self.gui.initiate_buttons_actions()
 
             if self.gui.games_played > 0:
+                self.gui.update_highscore(self.model.get_points())
                 self.model.reset()
                 self.gui.reset()
                 self.gui.set_label_score(self.model.get_points())
@@ -30,6 +31,7 @@ class BoggleController:
 
     def submit(self):
         if self.gui.is_counting:
+            self.gui.change_to_pressed()
             self.model.cur_path = self.gui.current_path
             if self.model.handle_word() is True:
                 word = self.model.get_found_words()[-1]

@@ -3,6 +3,7 @@ from tkinter import messagebox
 from typing import Callable, Dict, Tuple, List, Any
 
 # game preferences:
+HIGHSCORE_INTRO = "HIGHSCORE: "
 TEXT_COLOR = "white"
 GAME_LENGTH = 60  # in seconds
 NUM_COLS = 4
@@ -26,14 +27,15 @@ FOUND_WORDS_INTRO = "FOUND WORDS: "
 TITLE = "~ Boggle ~  by Daniel and Tamir"
 FONT = 'Courier'
 BG_COLOR = "#482B4F"  # other choices: 54325D, #331E38", "light slate blue"
-PRESSED_BUTTON = "chocolate1"  #  other choice: #e05215
-LABEL_COLOR = "#F4E8C1" # other choice: "navajo white"
-BUTTON_COLOR = "sandy brown"   # other choice: #EF8354
+PRESSED_BUTTON = "chocolate1"  # other choice: #e05215
+LABEL_COLOR = "#F4E8C1"  # other choice: "navajo white"
+BUTTON_COLOR = "sandy brown"  # other choice: #EF8354
 LOGO_PATH = "boggle_logo.png"
 GAME_START_PATH = "GAME_START.png"
 GAME_STARTED_PATH = "GAME_STARTED.png"
 PLAY_AGAIN_PATH = "PLAY_AGAIN!.png"
 SUBMIT_PATH = "SUBMIT.png"
+PRESSED_SUBMIT_PATH = "PRESSED_SUMBIT.png"
 
 
 # MediumPurple1 - normal button background
@@ -67,27 +69,32 @@ class BoggleGui:
         self.ph_game_started = tki.PhotoImage(file=GAME_STARTED_PATH)
         self.ph_play_again = tki.PhotoImage(file=PLAY_AGAIN_PATH)
         self.ph_submit = tki.PhotoImage(file=SUBMIT_PATH)
+        self.ph_pressed_submit = tki.PhotoImage(file=PRESSED_SUBMIT_PATH)
+
         # resize images:
         self.bn_start = self.ph_start.subsample(5, 5)
         self.bn_game_started = self.ph_game_started.subsample(6, 6)
         self.bn_play_again = self.ph_play_again.subsample(5, 5)
-        self.bh_submit = self.ph_submit.subsample(9,9)
+        self.bh_submit = self.ph_submit.subsample(9, 9)
+        self.bh_pressed_submit = self.ph_pressed_submit.subsample(9, 9)
 
         # show labels:
         self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15), bg=LABEL_COLOR)
-        self.current_word_label = tki.Label\
-            (text=CUR_WORD_INTRO , pady=5, font=(FONT, 13), bg=BG_COLOR,
+        self.current_word_label = tki.Label \
+            (text=CUR_WORD_INTRO, pady=5, font=(FONT, 13), bg=BG_COLOR,
              fg=TEXT_COLOR)
         self.count_label = tki.Label(font=(FONT, 40), bg=BG_COLOR,
                                      fg=TEXT_COLOR)
         self.show_formatted_time(GAME_LENGTH)
-        self.score_label = tki.Label(padx=32, pady=10, text=f"{SCORE_INTRO}0",
+        self.score_label = tki.Label(padx=10, pady=10,
+                                     text=f"{SCORE_INTRO}0   "
+                                          f"{HIGHSCORE_INTRO}{self.highscore}",
                                      relief=tki.RIDGE, font=(FONT, 20),
                                      bg=LABEL_COLOR)
         self.logo_label = tki.Label(image=self.logo, bg=BG_COLOR)
-        self.display_word_label = tki.Label\
+        self.display_word_label = tki.Label \
             (bg=BG_COLOR, font=(FONT, 20, "bold"), fg=TEXT_COLOR)
         # show buttons:
         self.start_button = tki.Button(
@@ -122,7 +129,7 @@ class BoggleGui:
         self.score_label.place(relx=0.5, rely=0.310, anchor="n")
         self.found_word_label.grid(row=4, pady=10, padx=10)
         self.display_word_label.place(relx=0.150, rely=0.900, anchor='sw')
-        white_space = tki.Label()
+        white_space = tki.Label(bg=BG_COLOR)
         white_space.grid(row=5)
 
     def set_submit_button_command(self, func: Callable):
@@ -132,13 +139,21 @@ class BoggleGui:
         self.start_button.configure(command=func)
 
     def set_label_score(self, points):
-        self.score_label.configure(text=f"{SCORE_INTRO}{points}")
+        self.score_label.configure(text=f"{SCORE_INTRO}{points}   "
+                                        f"{HIGHSCORE_INTRO}{self.highscore}")
 
     def set_game_started_btn(self):
         self.start_button.configure(image=self.bn_game_started)
 
     def set_play_again_btn(self):
         self.start_button.configure(image=self.bn_play_again)
+
+    def revert_submit(self):
+        self.submit_button.configure(image=self.bh_submit)
+
+    def change_to_pressed(self):
+        self.submit_button["image"] = self.bh_pressed_submit
+        self.root.after(200, self.revert_submit)
 
     def set_current_word_label(self):
         output = ""
@@ -185,6 +200,8 @@ class BoggleGui:
         output = FOUND_WORDS_INTRO
         for i in range(len(self.found_words)):
             output += f" {self.found_words[i]}"
+            if i != 0 and i % 15 == 0:
+                output += "\n"
             if i != (len(self.found_words) - 1):
                 output += ","
             else:
@@ -202,10 +219,9 @@ class BoggleGui:
         else:
             self.count_label.configure(text=f"{min}:{sec}")
 
-    def update_and_show_highscore(self, score):
+    def update_highscore(self, score):
         if score > self.highscore:
             self.highscore = score
-            # todo: update label
 
     def reset_buttons_color(self):
         for button in self.buttons_list:
@@ -248,7 +264,7 @@ class BoggleGui:
         self.coor_letter_dict = {}
         self.found_words = []
         self.current_path = []
-        self.current_word_label.configure(text=CUR_WORD_INTRO)
+        self.display_word_label.configure(text="")
         self.found_word_label.configure(text=FOUND_WORDS_INTRO)
 
     def run(self) -> None:
