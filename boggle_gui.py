@@ -26,13 +26,14 @@ FOUND_WORDS_INTRO = "FOUND WORDS: "
 TITLE = "~ Boggle ~  by Daniel and Tamir"
 FONT = 'Courier'
 BG_COLOR = "#482B4F"  # other choices: 54325D, #331E38", "light slate blue"
-PRESSED_BUTTON = "chocolate1"
-LABEL_COLOR = "#F4E8C1" #other choice: "navajo white"
-BUTTON_COLOR = "sandy brown"
+PRESSED_BUTTON = "chocolate1"  #  other choice: #e05215
+LABEL_COLOR = "#F4E8C1" # other choice: "navajo white"
+BUTTON_COLOR = "sandy brown"   # other choice: #EF8354
 LOGO_PATH = "boggle_logo.png"
 GAME_START_PATH = "GAME_START.png"
 GAME_STARTED_PATH = "GAME_STARTED.png"
 PLAY_AGAIN_PATH = "PLAY_AGAIN!.png"
+SUBMIT_PATH = "SUBMIT.png"
 
 
 # MediumPurple1 - normal button background
@@ -63,11 +64,14 @@ class BoggleGui:
         # load images:
         self.logo = tki.PhotoImage(file=LOGO_PATH)
         self.ph_start = tki.PhotoImage(file=GAME_START_PATH)
-        self.bn_start = self.ph_start.subsample(5, 5)
         self.ph_game_started = tki.PhotoImage(file=GAME_STARTED_PATH)
-        self.bn_game_started = self.ph_game_started.subsample(6, 6)
         self.ph_play_again = tki.PhotoImage(file=PLAY_AGAIN_PATH)
+        self.ph_submit = tki.PhotoImage(file=SUBMIT_PATH)
+        # resize images:
+        self.bn_start = self.ph_start.subsample(5, 5)
+        self.bn_game_started = self.ph_game_started.subsample(6, 6)
         self.bn_play_again = self.ph_play_again.subsample(5, 5)
+        self.bh_submit = self.ph_submit.subsample(9,9)
 
         # show labels:
         self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
@@ -89,8 +93,8 @@ class BoggleGui:
         self.start_button = tki.Button(
             self.root, text=START_BTN_MSG, command=self.game_countdown,
             image=self.bn_start, bg=BG_COLOR)
-        self.submit_button = tki.Button(text=SUBMIT_BTN_MSG,
-                                        padx=10, pady=12, relief=tki.RIDGE)
+        self.submit_button = tki.Button(text=SUBMIT_BTN_MSG, bg=BG_COLOR,
+                                        image=self.bh_submit)
         self.create_and_place_buttons()
 
         self.pack()
