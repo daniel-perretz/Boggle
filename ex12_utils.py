@@ -96,5 +96,3 @@ def minimize_dict(n: int, words: Dict[str, bool]) -> Dict[str, bool]:
             output[word] = True
     return output
 
-if __name__ == '__main__':
-    pass
