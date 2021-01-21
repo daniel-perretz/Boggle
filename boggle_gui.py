@@ -24,10 +24,15 @@ FOUND_WORDS_INTRO = "Found Words: "
 # design:
 TITLE = "~ Boggle ~  by Daniel and Tamir"
 FONT = 'helvetica'
-BUTTON_COLOR = "sandy brown"
-LOGO_PATH = "boggle_logo.png"
 BG_COLOR = "light slate blue"
 PRESSED_BUTTON = "chocolate1"
+LABEL_COLOR = "navajo white"
+BUTTON_COLOR = "sandy brown"
+LOGO_PATH = "boggle_logo.png"
+GAME_START_PATH = "GAME_START.png"
+GAME_STARTED_PATH = "GAME_STARTED.png"
+PLAY_AGAIN_PATH = "PLAY_AGAIN!.png"
+
 
 # MediumPurple1 - normal button background
 # BlueViolet - Pressed
@@ -36,33 +41,14 @@ PRESSED_BUTTON = "chocolate1"
 
 class BoggleGui:
     def __init__(self):
+        # initialize gui:
         self.root = tki.Tk()
         self.root.resizable(False, False)
         self.root.title(TITLE)
-        self.root.configure(bg = BG_COLOR)
-        # self.lower_frame = tki.Frame()
+        self.root.configure(bg =BG_COLOR)
         self.mid_frame = tki.Frame(padx=40, pady=30, bg=BG_COLOR)
 
-        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
-                                          relief=tki.GROOVE,
-                                          font=(FONT, 15), bg="navajo white")
-        self.current_word_label = tki.Label(text=CUR_WORD_INTRO
-                                            , pady=5, font=(FONT, 13),
-                                            bg = BG_COLOR)
-        self.count_label = tki.Label(font=(FONT, 40),bg = BG_COLOR)
-        self.show_formatted_time(GAME_LENGTH)
-        self.logo = tki.PhotoImage(file=LOGO_PATH)
-        self.logo_label = tki.Label(image=self.logo,bg = BG_COLOR)
-        self.start_button = tki.Button(
-            self.root, text=START_BTN_MSG, command=self.game_countdown,
-            padx=37, pady=20, relief=tki.RIDGE)
-        self.submit_button = tki.Button(text=SUBMIT_BTN_MSG,
-                                        padx=10, pady=12, relief=tki.RIDGE)
-        self.score_label = tki.Label(padx=32, pady=10, text=f"{SCORE_INTRO}0",
-                                     relief=tki.RIDGE,
-                                     font=(FONT, 15))
-        self.display_word_label = tki.Label(bg = BG_COLOR)
-
+        # set gui attributes:
         self.is_counting: bool = False
         self.games_played: int = 0
         self.highscore: int = 0
@@ -73,6 +59,40 @@ class BoggleGui:
         self.found_words = []
         self.took_a_break = False
 
+        # load images:
+        self.logo = tki.PhotoImage(file=LOGO_PATH)
+        self.ph_start = tki.PhotoImage(file=GAME_START_PATH)
+        self.bn_start = self.ph_start.subsample(5, 5)
+        self.ph_game_started = tki.PhotoImage(file=GAME_STARTED_PATH)
+        self.bn_game_started = self.ph_game_started.subsample(6, 6)
+        self.ph_play_again = tki.PhotoImage(file=PLAY_AGAIN_PATH)
+        self.bn_play_again = self.ph_play_again.subsample(5, 5)
+
+        # show labels:
+        self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
+                                          relief=tki.GROOVE,
+                                          font=(FONT, 15), bg=LABEL_COLOR)
+        self.current_word_label = tki.Label(text=CUR_WORD_INTRO
+                                            , pady=5, font=(FONT, 13),
+                                            bg = BG_COLOR)
+        self.count_label = tki.Label(font=(FONT, 40), bg = BG_COLOR)
+        self.show_formatted_time(GAME_LENGTH)
+        self.score_label = tki.Label(padx=32, pady=10, text=f"{SCORE_INTRO}0",
+                                     relief=tki.RIDGE,
+                                     font=(FONT, 15))
+        self.logo_label = tki.Label(image=self.logo,bg = BG_COLOR)
+        self.display_word_label = tki.Label(bg = BG_COLOR)
+        # show buttons:
+        self.start_button = tki.Button(
+            self.root, text=START_BTN_MSG, command=self.game_countdown,
+            image=self.bn_start, bg = BG_COLOR)
+        self.submit_button = tki.Button(text=SUBMIT_BTN_MSG,
+                                        padx=10, pady=12, relief=tki.RIDGE)
+        self.create_and_place_buttons()
+
+        self.pack()
+
+    def create_and_place_buttons(self):
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
                 frame = tki.Frame(
@@ -84,7 +104,6 @@ class BoggleGui:
                                     relief=tki.RIDGE, bg=BUTTON_COLOR)
                 self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
-        self.pack()
 
     def pack(self):
         self.logo_label.grid()
@@ -107,6 +126,12 @@ class BoggleGui:
 
     def set_label_score(self, points):
         self.score_label.configure(text=f"{SCORE_INTRO}{points}")
+
+    def set_game_started_btn(self):
+        self.start_button.configure(image=self.bn_game_started)
+
+    def set_play_again_btn(self):
+        self.start_button.configure(image=self.bn_play_again)
 
     def set_current_word_label(self):
         output = ""
@@ -181,14 +206,13 @@ class BoggleGui:
     def game_countdown(self):
         self.is_counting = True
         self.countdown(GAME_LENGTH)
-        self.start_button["text"] = MID_GAME_MSG
 
     def countdown(self, time):
         if time <= 0:
             self.is_counting = False
             if not self.is_counting:
                 self.count_label.configure(text=GAME_OVER_MSG)
-            self.start_button.configure(text=PLAY_AGAIN_MSG)
+            self.set_play_again_btn()
             self.games_played += 1
             return
         else:

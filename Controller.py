@@ -18,6 +18,7 @@ class BoggleController:
             self.model.create_board()
             self.gui.game_countdown()
             self.gui.set_buttons_text(self.model.board)
+            self.gui.set_game_started_btn()
             self.gui.initiate_buttons_actions()
 
             if self.gui.games_played > 0:
