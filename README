@@ -9,10 +9,10 @@ and asking the player if it wants to take a break or not. If the player chooses
 to do so, the reminder won't appear again. If he decided not to, the window
 would pop up after the same amount of games again, until he (hopefully) does :)
 
-3) 'Retro' responsive buttons designed by us (based on an empty buttons we
-found on the web):
+3) ~ 'Retro' responsive buttons designed by us*  ~
 In order to keep our design  minimalistic, we only designed two buttons -
 The first 'multi-purpose' button switches between starting the game, restarting
 , and mid-game state automatically. The second button is a responsive 8-bit
 "submit" button we designed ourselves using an 8 bit font. Along with the rest
 of the layout, we hoped to achieve an 'arcade' nostalgic feeling to the game.
+* (based on an empty buttons we found on the web and edited to our needs)
