@@ -5,7 +5,7 @@ from typing import Callable, Dict, Tuple, List, Any
 # game preferences:
 HIGHSCORE_INTRO = "HIGHSCORE: "
 TEXT_COLOR = "white"
-GAME_LENGTH = 60  # in seconds
+GAME_LENGTH = 5  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
@@ -44,6 +44,10 @@ PRESSED_SUBMIT_PATH = "PRESSED_SUMBIT.png"
 # Turquoise1 / CadeBlue2 / PaleTurquoise1 - general background
 
 class BoggleGui:
+    """
+    This class is responsible for the graphic user interface of the game which
+    includes the the
+    """
     def __init__(self):
         # initialize gui:
         self.root = tki.Tk()
@@ -120,6 +124,9 @@ class BoggleGui:
                 button.grid(padx=0, pady=0)
 
     def pack(self):
+        """this function organizes widgets frames and
+         labels in blocks before placing
+        them in the parent widget and """
         self.logo_label.grid()
         self.count_label.grid()
         self.start_button.grid()
@@ -133,6 +140,10 @@ class BoggleGui:
         white_space.grid(row=5)
 
     def set_submit_button_command(self, func: Callable):
+        """this function uses the configure method to
+         make for the method to be
+        called
+        when the button is clicked. """
         self.submit_button.configure(command=func)
 
     def set_start_button_command(self, func: Callable):
