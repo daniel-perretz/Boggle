@@ -3,6 +3,7 @@ from tkinter import messagebox
 from typing import Callable, Dict, Tuple, List, Any
 
 # game preferences:
+TEXT_COLOR = "white"
 GAME_LENGTH = 60  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
@@ -11,22 +12,22 @@ ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
 # texts:
 START_BTN_MSG = 'Start Game'
 MID_GAME_MSG = "Game Started..."
-GAME_OVER_MSG = "Time's up!"
+GAME_OVER_MSG = "TIME'S UP!"
 PLAY_AGAIN_MSG = "Play again?"
 SUBMIT_BTN_MSG = 'Submit'
 BREAK_PROMPT_TITLE = "Time for a break?"
 
 # labels' intros:
-SCORE_INTRO = "Score: "
-CUR_WORD_INTRO = " Current Word: "
-FOUND_WORDS_INTRO = "Found Words: "
+SCORE_INTRO = "SCORE: "
+CUR_WORD_INTRO = " CURRENT WORD: "
+FOUND_WORDS_INTRO = "FOUND WORDS: "
 
 # design:
 TITLE = "~ Boggle ~  by Daniel and Tamir"
-FONT = 'helvetica'
-BG_COLOR = "light slate blue"
+FONT = 'Courier'
+BG_COLOR = "#482B4F"  # other choices: 54325D, #331E38", "light slate blue"
 PRESSED_BUTTON = "chocolate1"
-LABEL_COLOR = "navajo white"
+LABEL_COLOR = "#F4E8C1" #other choice: "navajo white"
 BUTTON_COLOR = "sandy brown"
 LOGO_PATH = "boggle_logo.png"
 GAME_START_PATH = "GAME_START.png"
@@ -36,7 +37,7 @@ PLAY_AGAIN_PATH = "PLAY_AGAIN!.png"
 
 # MediumPurple1 - normal button background
 # BlueViolet - Pressed
-#tan1,peach puff,sandy brown
+# tan1,peach puff,sandy brown
 # Turquoise1 / CadeBlue2 / PaleTurquoise1 - general background
 
 class BoggleGui:
@@ -45,7 +46,7 @@ class BoggleGui:
         self.root = tki.Tk()
         self.root.resizable(False, False)
         self.root.title(TITLE)
-        self.root.configure(bg =BG_COLOR)
+        self.root.configure(bg=BG_COLOR)
         self.mid_frame = tki.Frame(padx=40, pady=30, bg=BG_COLOR)
 
         # set gui attributes:
@@ -72,20 +73,22 @@ class BoggleGui:
         self.found_word_label = tki.Label(text=FOUND_WORDS_INTRO,
                                           relief=tki.GROOVE,
                                           font=(FONT, 15), bg=LABEL_COLOR)
-        self.current_word_label = tki.Label(text=CUR_WORD_INTRO
-                                            , pady=5, font=(FONT, 13),
-                                            bg = BG_COLOR)
-        self.count_label = tki.Label(font=(FONT, 40), bg = BG_COLOR)
+        self.current_word_label = tki.Label\
+            (text=CUR_WORD_INTRO , pady=5, font=(FONT, 13), bg=BG_COLOR,
+             fg=TEXT_COLOR)
+        self.count_label = tki.Label(font=(FONT, 40), bg=BG_COLOR,
+                                     fg=TEXT_COLOR)
         self.show_formatted_time(GAME_LENGTH)
         self.score_label = tki.Label(padx=32, pady=10, text=f"{SCORE_INTRO}0",
-                                     relief=tki.RIDGE,
-                                     font=(FONT, 15))
-        self.logo_label = tki.Label(image=self.logo,bg = BG_COLOR)
-        self.display_word_label = tki.Label(bg = BG_COLOR)
+                                     relief=tki.RIDGE, font=(FONT, 20),
+                                     bg=LABEL_COLOR)
+        self.logo_label = tki.Label(image=self.logo, bg=BG_COLOR)
+        self.display_word_label = tki.Label\
+            (bg=BG_COLOR, font=(FONT, 20, "bold"), fg=TEXT_COLOR)
         # show buttons:
         self.start_button = tki.Button(
             self.root, text=START_BTN_MSG, command=self.game_countdown,
-            image=self.bn_start, bg = BG_COLOR)
+            image=self.bn_start, bg=BG_COLOR)
         self.submit_button = tki.Button(text=SUBMIT_BTN_MSG,
                                         padx=10, pady=12, relief=tki.RIDGE)
         self.create_and_place_buttons()
@@ -164,6 +167,7 @@ class BoggleGui:
                 self.current_path.remove(coor)
                 del self.coor_letter_dict[coor]
             self.set_current_word_label()
+
         return cmd
 
     def initiate_buttons_actions(self):
@@ -197,7 +201,7 @@ class BoggleGui:
     def update_and_show_highscore(self, score):
         if score > self.highscore:
             self.highscore = score
-            #todo: update label
+            # todo: update label
 
     def reset_buttons_color(self):
         for button in self.buttons_list:
@@ -250,4 +254,3 @@ class BoggleGui:
 if __name__ == "__main__":
     cg = BoggleGui()
     cg.run()
-
