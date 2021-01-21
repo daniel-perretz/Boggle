@@ -1,11 +1,11 @@
 import tkinter as tki
 from tkinter import messagebox
-from typing import Callable, Dict, Tuple, List, Any
+from typing import Callable, Dict, Tuple
 
 # game preferences:
 HIGHSCORE_INTRO = "HIGHSCORE: "
 TEXT_COLOR = "white"
-GAME_LENGTH = 20  # in seconds
+GAME_LENGTH = 180  # in seconds
 NUM_COLS = 4
 NUM_ROWS = 4
 ASK_FOR_BREAK_INTERVAL = 3  # ask user to take a break after # games
@@ -45,9 +45,10 @@ PRESSED_SUBMIT_PATH = "PRESSED_SUMBIT.png"
 
 class BoggleGui:
     """
-    This class is responsible for the graphic user interface of the game which
-    includes the the
+    This class is responsible for the graphic user interface of the game, and
+    their basic visual processes
     """
+
     def __init__(self):
         # initialize gui:
         self.root = tki.Tk()
@@ -111,6 +112,8 @@ class BoggleGui:
         self.pack()
 
     def create_and_place_buttons(self):
+        """ This function creates buttons and places them in a grid
+        note: it does not activates an action when they are pressed"""
         for i in range(NUM_COLS):
             for j in range(NUM_ROWS):
                 frame = tki.Frame(
@@ -119,14 +122,13 @@ class BoggleGui:
                 )
                 frame.grid(row=i, column=j)
                 button = tki.Button(master=frame, text='?', padx=31, pady=31,
-                                    relief=tki.RIDGE, bg=BUTTON_COLOR)
+                                    relief=tki.RAISED, bg=BUTTON_COLOR)
                 self.buttons_list.append(button)
                 button.grid(padx=0, pady=0)
 
     def pack(self):
         """this function organizes widgets frames and
-         labels in blocks before placing
-        them in the parent widget and """
+         labels in blocks, before finally placing them in the parent window"""
         self.logo_label.grid()
         self.count_label.grid()
         self.start_button.grid()
@@ -163,16 +165,21 @@ class BoggleGui:
         self.submit_button.configure(image=self.bh_submit)
 
     def change_to_pressed(self):
+        """ Changes the submit button's image to look like it is 'pressed'"""
         self.submit_button["image"] = self.bh_pressed_submit
         self.root.after(200, self.revert_submit)
 
     def set_current_word_label(self):
+        """ Calculates which letters to show, based on the coordinates
+        chosen"""
         output = ""
         for i, coor in enumerate(self.coor_letter_dict):
             output += self.coor_letter_dict[coor]
         self.display_word_label.configure(text=f"{output}")
 
     def set_buttons_text(self, board):
+        """ Iterates through all the letters' buttons and sets their text
+         according to a given board"""
         count = 0
         for row in range(len(board)):
             for col in range(len(board[row])):
@@ -183,6 +190,10 @@ class BoggleGui:
                 count += 1
 
     def create_button_command(self, coor, button) -> Callable:
+        """ Creates a suitable command for each button according to its
+        letter and returns it if the game should be running. The command also
+         takes care of the button's normal / pressed color"""
+
         def cmd():
             if not self.is_counting:
                 return
@@ -201,12 +212,15 @@ class BoggleGui:
         return cmd
 
     def initiate_buttons_actions(self):
+        """ Sets each letter button with its appropriate action"""
         for button in self.buttons_list:
             coor = self.buttons_loc_letter_dict[button][0]
             func = self.create_button_command(coor, button)
             button.configure(command=func)
 
     def show_found_word(self, word):
+        """ Formats the found word's list and shows it in the appropriate
+        label"""
         self.found_words.append(word)
         output = FOUND_WORDS_INTRO
         for i in range(len(self.found_words)):
@@ -220,6 +234,8 @@ class BoggleGui:
         self.found_word_label.configure(text=output)
 
     def show_formatted_time(self, time):
+        """ Formats a time in second to minutes:seconds and shows it in the
+        appropriate label"""
         min, sec = divmod(time, 60)
         if sec // 10 == 0 and min // 10 == 0:
             self.count_label.configure(text=f"0{min}:0{sec}")
@@ -231,18 +247,24 @@ class BoggleGui:
             self.count_label.configure(text=f"{min}:{sec}")
 
     def update_highscore(self, score):
+        """Updates the highscore if necessary"""
         if score > self.highscore:
             self.highscore = score
 
     def reset_buttons_color(self):
+        """ Changes all buttons to their default color"""
         for button in self.buttons_list:
             button["bg"] = BUTTON_COLOR
 
     def game_countdown(self):
+        """Starts the countdown in the appropriate game time"""
         self.is_counting = True
         self.countdown(GAME_LENGTH)
 
     def countdown(self, time):
+        """Counts down to a given time in seconds and updates the count label
+        with an appropriate message telling that it is over. Also updates
+        the number of games played"""
         if time <= 0:
             self.is_counting = False
             if not self.is_counting:
@@ -252,36 +274,42 @@ class BoggleGui:
             return
         else:
             self.show_formatted_time(time)
+            self.root.after(1000, self.countdown, (time - 1))
 
-        self.root.after(1000, self.countdown, (time - 1))
-
-    def ask_for_a_break(self):
-        BREAK_PROMPT_MSG = f"Games are fun, but can be addictive." \
+    def ask_for_a_break(self) -> bool:
+        """Asks the user to take a break after a certain amount of games.
+        After he takes a break, he would not be asked to take another one,
+        but if he refuses the message will pop up after the same number of
+        games
+        :returns a bool stating whether user took a break or not"""
+        break_prompt_msg = f"Games are fun, but can be addictive." \
                            f" You already played" \
                            f" {self.games_played} games, would you like to " \
                            "take a break? \n" \
-                           "Don't worry, Boggle will wait for you here when" \
-                           " you get back"
+                           "Don't worry, Boggle will save your score and" \
+                           " wait for you here when you get back!"
         if self.took_a_break is False and self.games_played != 0 and \
                 self.games_played % ASK_FOR_BREAK_INTERVAL == 0:
-            if messagebox.askquestion(BREAK_PROMPT_TITLE, BREAK_PROMPT_MSG) \
+            if messagebox.askquestion(BREAK_PROMPT_TITLE, break_prompt_msg) \
                     == "yes":
                 self.took_a_break = True
                 return True
             else:
                 return False
 
-    def reset(self):
-        self.coor_letter_dict = {}
-        self.found_words = []
+    def reset_current_path_and_word(self):
+        """Empties the current path and word saved"""
         self.current_path = []
-        self.display_word_label.configure(text="")
+        self.coor_letter_dict = {}
+        self.set_current_word_label()
+
+    def reset(self):
+        """Resets the entire GUI, not including highscore and games played"""
+        self.reset_current_path_and_word()
+        self.found_words = []
         self.found_word_label.configure(text=FOUND_WORDS_INTRO)
 
     def run(self) -> None:
+        """Runs the Graphic User Interface"""
         self.root.mainloop()
 
-
-if __name__ == "__main__":
-    cg = BoggleGui()
-    cg.run()

@@ -91,33 +91,5 @@ def minimize_dict(n: int, words: Dict[str, bool]) -> Dict[str, bool]:
             output[word] = True
     return output
 
-
-def main():
-    board = [
-        ['A', 'E', 'A', 'N', 'E', 'G'],
-        ['A', 'H', 'S', 'P', 'C', 'O'],
-        ['A', 'S', 'P', 'F', 'F', 'K'],
-        ['O', 'B', 'J', 'O', 'A', 'B'],
-        ['I', 'O', 'T', 'M', 'U', 'C'],
-        ['R', 'Y', 'V', 'D', 'E', 'L'],
-        ['L', 'R', 'E', 'I', 'X', 'D'],
-        ['E', 'I', 'U', 'N', 'E', 'S'],
-        ['W', 'N', 'G', 'E', 'E', 'H'],
-        ['L', 'N', 'H', 'N', 'R', 'Z'],
-        ['T', 'S', 'T', 'I', 'Y', 'D'],
-        ['O', 'W', 'T', 'O', 'A', 'T'],
-        ['E', 'R', 'T', 'T', 'Y', 'L'],
-        ['T', 'O', 'E', 'S', 'S', 'I'],
-        ['T', 'E', 'R', 'W', 'H', 'V'],
-        ['N', 'U', 'I', 'H', 'M', 'QU']
-    ]
-
 if __name__ == '__main__':
-    board = [['C', 'A', 'T', 'Q'],
-             ['D', 'O', 'G', 'Q'],
-             ['B', 'I', 'T', 'Q'],
-             ['Q', 'Q', 'Q', 'Q']]
-    word_dict = {'CAT': True, 'DOG': True, 'BIT': True}
-    expected = [("CAT", [(0, 0), (0, 1), (0, 2)]),
-                ("DOG", [(1, 0), (1, 1), (1, 2)]),
-                ("BIT", [(2, 0), (2, 1), (2, 2)])]
+    pass
